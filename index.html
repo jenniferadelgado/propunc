@@ -3,16 +3,15 @@
 <html>
 <head>
 	<script src="plotly-latest.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-	<div id="test" style="width:660px;height:250px;"></div>
-	<script>
-		TEST = document.getElementById('test');
-		Plotly.newPlot(TEST, [{
-			x: [1,2,3,4,5],
-			y: [1,2,4,8,16]	}], {
-			margin: { t: 0 } } );
-	</script>
+	<div id="graph" style="width:660px;height:660px;">
+		<div class="slidecontainer">
+			<input type="range" min="0" max="100" value="50" class="slider" id="mySlider">
+		</div>
+	</div>
+	<script src="script.js"></script>
 </body>
 </html>
