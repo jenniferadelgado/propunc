@@ -37,7 +37,8 @@ for (var i = 0; i<=numSteps; i++) {
 
 var trace0 = {
     x: xCoords,
-    y: yCoords
+    y: yCoords,
+    mode: 'lines'
 };
 
 var sliderValue = 50;
@@ -53,13 +54,65 @@ var trace1 = {
     type: 'scatter'
 };
 
+var upperBound = {
+    x: [0,10],
+    y: [yCoords[sliderValue]+errY, yCoords[sliderValue]+errY],
+    mode: 'lines',
+    line: {
+        dash: 'dot',
+        width: 2
+    }
+};
+
+var lowerBound = {
+    x: [0,10],
+    y: [yCoords[sliderValue]-errY, yCoords[sliderValue]-errY],
+    mode: 'lines',
+    line: {
+        dash: 'dot',
+        width: 2
+    }
+}
+
+var leftBound = {
+    x: [xCoords[sliderValue]-errX, xCoords[sliderValue]-errX],
+    y: [0,10],
+    mode: 'lines',
+    line: {
+        dash: 'dot',
+        width: 2
+    }
+}
+
+var rightBound = {
+    x: [xCoords[sliderValue]+errX, xCoords[sliderValue]+errX],
+    y: [0,10],
+    mode: 'lines',
+    line: {
+        dash: 'dot',
+        width: 2
+    }
+}
+
 var data = [
     trace0,
-    trace1
+    trace1,
+    upperBound,
+    lowerBound,
+    leftBound,
+    rightBound
 ];
 
 var layout = {
-    margin: { t: 0 }
+    margin: { t: 0 },
+    xaxis: {
+        range: [0, 10],
+        autorange: false
+    },
+    yaxis: {
+        range: [0, 10],
+        autorange: false
+    }
 };
 
 graph = document.getElementById('graph');
@@ -70,28 +123,19 @@ Plotly.newPlot(graph, data, layout);
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
     sliderValue = xSlider.value;
-    errY = yError3rdOrder(xCoords[sliderValue], errX);
-    trace1 = {
-        x: [xCoords[sliderValue]],
-        y: [yCoords[sliderValue]],
-        error_y: {
-            type: 'constant',
-            value: errY
-        },
-        type: 'scatter'
-    };
-
-    data = [
-        trace0,
-        trace1
-    ];
-
-    Plotly.react(graph, data, layout);
+    updateGraph();
 }
 
 var errorSlider = document.getElementById('errorSlider');
 errorSlider.oninput = function() {
     errX = 2*(errorSlider.value/100);
+    updateGraph();
+}
+
+/**
+ * Updates the graph to immediately reflect changes caused by user input.
+*/
+function updateGraph() {
     errY = yError3rdOrder(xCoords[sliderValue], errX);
     trace1 = {
         x: [xCoords[sliderValue]],
@@ -103,9 +147,53 @@ errorSlider.oninput = function() {
         type: 'scatter'
     };
 
+    upperBound = {
+        x: [0,10],
+        y: [yCoords[sliderValue]+errY, yCoords[sliderValue]+errY],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2
+        }
+    }
+
+    lowerBound = {
+        x: [0,10],
+        y: [yCoords[sliderValue]-errY, yCoords[sliderValue]-errY],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2
+        }
+    }
+
+    leftBound = {
+        x: [xCoords[sliderValue]-errX, xCoords[sliderValue]-errX],
+        y: [0,10],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2
+        }
+    }
+
+    rightBound = {
+        x: [xCoords[sliderValue]+errX, xCoords[sliderValue]+errX],
+        y: [0,10],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2
+        }
+    }
+
     data = [
         trace0,
-        trace1
+        trace1,
+        upperBound,
+        lowerBound,
+        leftBound,
+        rightBound
     ];
 
     Plotly.react(graph, data, layout);
