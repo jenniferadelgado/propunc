@@ -33,15 +33,15 @@ for (var i = 0; i<=numSteps; i++) {
     yCoords[i] = calculate3rdOrder(xCoords[i]);
 }
 
-/* -------------Graph Setup------------ */
+/* -------------Initial Graph Setup------------ */
 
 var trace0 = {
     x: xCoords,
     y: yCoords
 };
 
-var sliderValue = 90; // Hypothetical value gotten from the slider controlling where x is on the graph.
-var errX = 1; // Hypothetical value gotten from a slider controlling the uncertainty on x.
+var sliderValue = 50;
+var errX = 1;
 var errY = yError3rdOrder(xCoords[sliderValue], errX);
 var trace1 = {
     x: [xCoords[sliderValue]],
@@ -60,7 +60,53 @@ var data = [
 
 var layout = {
     margin: { t: 0 }
-}; 
+};
 
 graph = document.getElementById('graph');
-Plotly.react(graph, data, layout);
+Plotly.newPlot(graph, data, layout);
+
+/* ------------Update Graph On Input-------------- */
+
+var xSlider = document.getElementById('xSlider');
+xSlider.oninput = function() {
+    sliderValue = xSlider.value;
+    errY = yError3rdOrder(xCoords[sliderValue], errX);
+    trace1 = {
+        x: [xCoords[sliderValue]],
+        y: [yCoords[sliderValue]],
+        error_y: {
+            type: 'constant',
+            value: errY
+        },
+        type: 'scatter'
+    };
+
+    data = [
+        trace0,
+        trace1
+    ];
+
+    Plotly.react(graph, data, layout);
+}
+
+var errorSlider = document.getElementById('errorSlider');
+errorSlider.oninput = function() {
+    errX = 2*(errorSlider.value/100);
+    errY = yError3rdOrder(xCoords[sliderValue], errX);
+    trace1 = {
+        x: [xCoords[sliderValue]],
+        y: [yCoords[sliderValue]],
+        error_y: {
+            type: 'constant',
+            value: errY
+        },
+        type: 'scatter'
+    };
+
+    data = [
+        trace0,
+        trace1
+    ];
+
+    Plotly.react(graph, data, layout);
+}
