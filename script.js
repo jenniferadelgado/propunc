@@ -51,6 +51,10 @@ var trace1 = {
         type: 'constant',
         value: errY
     },
+    error_x: {
+        type: 'constant',
+        value: errX
+    },
     type: 'scatter'
 };
 
@@ -104,7 +108,7 @@ var data = [
 ];
 
 var layout = {
-    margin: { t: 0 },
+    showlegend: false,
     xaxis: {
         range: [0, 10],
         autorange: false
@@ -116,7 +120,7 @@ var layout = {
 };
 
 graph = document.getElementById('graph');
-Plotly.newPlot(graph, data, layout);
+Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 /* ------------Update Graph On Input-------------- */
 
@@ -132,6 +136,11 @@ errorSlider.oninput = function() {
     updateGraph();
 }
 
+var horizErrBar = document.getElementById('xError');
+horizErrBar.oninput = function() {
+    console.log(horizErrBar.checked);
+}
+
 /**
  * Updates the graph to immediately reflect changes caused by user input.
 */
@@ -143,6 +152,10 @@ function updateGraph() {
         error_y: {
             type: 'constant',
             value: errY
+        },
+        error_x: {
+            type: 'constant',
+            value: errX
         },
         type: 'scatter'
     };

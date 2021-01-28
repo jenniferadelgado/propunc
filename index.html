@@ -7,13 +7,23 @@
 </head>
 
 <body>
-	<div id="graph" style="width:660px;height:660px;">
+	<div class="graph" id="graph">
 		<div class="slidecontainer">
+			<p>Move the point</p>
 			<input type="range" min="0" max="100" value="50" class="slider" id="xSlider">
 			<br>
+			<p>Change the uncertainty on the point</p>
 			<input type="range" min="1" max="100" value="50" class="slider" id="errorSlider">
 		</div>
+
+		<div class="toolbar" id="toolbar">
+			<input type="checkbox" id="xError" name="xError">
+			<label for="xError"> Show horizontal error bar</label><br>
+			<input type="checkbox" id="errorBox" name="errorBox">
+			<label for="errorBox"> Show error bounds</label>
+		</div>
 	</div>
+
 	<script src="script.js"></script>
 </body>
 </html>
