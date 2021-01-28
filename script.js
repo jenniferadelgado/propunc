@@ -3,7 +3,7 @@
  * Returns the output of a certain third order polynomial.
  * @param {number} x
  * @return {number} The output of the function.
-*/
+ */
 function calculate3rdOrder(x) {
     // function y = 0.0417x^3 - 0.635x^2 + 3.1829x - 0.0053
     return (0.0417*x*x*x) - (0.635*x*x) + (3.1829*x) - 0.0053;
@@ -15,7 +15,7 @@ function calculate3rdOrder(x) {
  * @param {number} x
  * @param {number} xError - the uncertainty on x
  * @return {number} The uncertainty on y.
-*/
+ */
 function yError3rdOrder(x, xError) {
     // Partial with respect to x:
     // 0.1251x^2 - 1.27x + 3.1829
@@ -157,7 +157,7 @@ errBound.oninput = function() {
 
 /**
  * Updates the graph to immediately reflect changes caused by user input.
-*/
+ */
 function updateGraph() {
     errY = yError3rdOrder(xCoords[sliderValue], errX);
     trace1 = {
