@@ -44,6 +44,7 @@ var trace0 = {
 var sliderValue = 50;
 var errX = 1;
 var errY = yError3rdOrder(xCoords[sliderValue], errX);
+var horizontalErrorBarVisible = false;
 var trace1 = {
     x: [xCoords[sliderValue]],
     y: [yCoords[sliderValue]],
@@ -53,11 +54,13 @@ var trace1 = {
     },
     error_x: {
         type: 'constant',
-        value: errX
+        value: errX,
+        visible: horizontalErrorBarVisible
     },
     type: 'scatter'
 };
 
+var errorBoundsVisible = false;
 var upperBound = {
     x: [0,10],
     y: [yCoords[sliderValue]+errY, yCoords[sliderValue]+errY],
@@ -65,7 +68,8 @@ var upperBound = {
     line: {
         dash: 'dot',
         width: 2
-    }
+    },
+    visible: errorBoundsVisible
 };
 
 var lowerBound = {
@@ -75,7 +79,8 @@ var lowerBound = {
     line: {
         dash: 'dot',
         width: 2
-    }
+    },
+    visible: errorBoundsVisible
 }
 
 var leftBound = {
@@ -85,7 +90,8 @@ var leftBound = {
     line: {
         dash: 'dot',
         width: 2
-    }
+    },
+    visible: errorBoundsVisible
 }
 
 var rightBound = {
@@ -95,7 +101,8 @@ var rightBound = {
     line: {
         dash: 'dot',
         width: 2
-    }
+    },
+    visible: errorBoundsVisible
 }
 
 var data = [
@@ -138,7 +145,14 @@ errorSlider.oninput = function() {
 
 var horizErrBar = document.getElementById('xError');
 horizErrBar.oninput = function() {
-    console.log(horizErrBar.checked);
+    horizontalErrorBarVisible = horizErrBar.checked;
+    updateGraph();
+}
+
+var errBound = document.getElementById('errorBox');
+errBound.oninput = function() {
+    errorBoundsVisible = errBound.checked;
+    updateGraph();
 }
 
 /**
@@ -155,7 +169,8 @@ function updateGraph() {
         },
         error_x: {
             type: 'constant',
-            value: errX
+            value: errX,
+            visible: horizontalErrorBarVisible
         },
         type: 'scatter'
     };
@@ -167,7 +182,8 @@ function updateGraph() {
         line: {
             dash: 'dot',
             width: 2
-        }
+        },
+        visible: errorBoundsVisible
     }
 
     lowerBound = {
@@ -177,7 +193,8 @@ function updateGraph() {
         line: {
             dash: 'dot',
             width: 2
-        }
+        },
+        visible: errorBoundsVisible
     }
 
     leftBound = {
@@ -187,7 +204,8 @@ function updateGraph() {
         line: {
             dash: 'dot',
             width: 2
-        }
+        },
+        visible: errorBoundsVisible
     }
 
     rightBound = {
@@ -197,7 +215,8 @@ function updateGraph() {
         line: {
             dash: 'dot',
             width: 2
-        }
+        },
+        visible: errorBoundsVisible
     }
 
     data = [
