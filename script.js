@@ -116,6 +116,12 @@ var data = [
 
 var layout = {
     showlegend: false,
+    margin: {
+        l: 20,
+        r: 20,
+        t: 20,
+        b: 20
+    },
     xaxis: {
         range: [0, 10],
         autorange: false

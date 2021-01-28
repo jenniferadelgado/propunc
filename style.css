@@ -1,28 +1,53 @@
+body {
+	background-color: lightblue;
+}
+
 .title {
 	width: 100%;
 	text-align: center;
 	font-family: Arial;
 }
 
-.playboxcontainer {
-	width: 800px;
+.simulationarea {
+	position: relative;
+	width: 970px;
 	height: 800px;
 	margin: auto;
-}
-
-.graph {
-	position: relative;
-	width: 660px;
-	height: 660px;
-	margin: auto;
+	background-color: white;
+	border: solid red;
+	border-width: 40px 5px 5px 5px;
+	border-radius: 10px;
 }
 
 .toolbar {
 	position: absolute;
-	top: 50%;
-	left: 100%;
+	top: -5px;
+	right: -5px;
 	width: 150px;
-	padding-left: 20px;
+	height: 100%;
+	padding-left: 5px;
+	border: 5px solid red;
+	border-radius: 10px;
+	background: rgba(255, 0, 0, 0.2);
+}
+
+.toolbar.title {
+	font-family: Arial;
+	text-align: center;
+	width: 100%;
+}
+
+.playarea {
+	position: absolute;
+	left: 0;
+	width: 810px;
+	height: 800px;
+}
+
+.graph {
+	width: 660px;
+	height: 660px;
+	margin: auto;
 }
 
 .slidecontainer {
