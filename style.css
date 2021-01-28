@@ -19,6 +19,17 @@ body {
 	border-radius: 10px;
 }
 
+.tabs {
+	position: absolute;
+	top: -35px;
+	width: 810px;
+	height: 30px;
+}
+
+.tab {
+	height: 100%;
+}
+
 .toolbar {
 	position: absolute;
 	top: -5px;
