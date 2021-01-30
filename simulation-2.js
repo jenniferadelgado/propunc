@@ -37,28 +37,32 @@ function totalError(x, m, xError, mError) {
 
 var m = 1; // variable for slope
 
-var trace0 = { // The function being examined
-    x: [0, 10],
-    y: [0, m*10],
-    mode: 'lines'
-};
+var trace0;
+updateTrace0();
 
 var xSliderValue = 5; // Position of the point, as set by the corresponding slider.
 var errX = 1; // The uncertainty on x, as set by the corresponding slider.
 var errM = .5; // The uncertainty on the slope, as set by the corresponding slider.
 var errY = totalError(xSliderValue, m, errX, errM);
-var trace1 = { // The movable point
-    x: [xSliderValue],
-    y: [m*xSliderValue],
-    error_y: {
-        type: 'constant',
-        value: errY
-    }
-};
+var xErrorBarsVisible = false;
+var trace1;
+updateTrace1();
+
+var mErrorLinesVisible = false;
+var slopeUpperBound, slopeLowerBound;
+updateSlopeErrorLines();
+
+var yErrorLinesVisible = false;
+var yUpperBound, yLowerBound;
+updateYErrorLines();
 
 var data = [
     trace0,
-    trace1
+    trace1,
+    slopeUpperBound,
+    slopeLowerBound,
+    yUpperBound,
+    yLowerBound
 ];
 
 var layout = {
@@ -84,16 +88,163 @@ Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 /* ------------Update Graph On Input-------------- */
 
+
+/* ---------oninput functions----------*/
+
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
-    xSliderValue = xSlider.value;
+    xSliderValue = xSlider.value/10;
     updateGraph();
 }
 
+var xErrorMax = 2;
+var xErrorSlider = document.getElementById('xErrorSlider');
+xErrorSlider.oninput = function() {
+    errX = xErrorMax*(xErrorSlider.value/100);
+    updateGraph();
+}
+
+var slopeMax = 3;
+var slopeSlider = document.getElementById('mSlider');
+slopeSlider.oninput = function() {
+    m = slopeMax*(slopeSlider.value/100);
+    updateGraph();
+}
+
+var slopeErrorMax = 1;
+var mErrorSlider = document.getElementById('mErrorSlider');
+mErrorSlider.oninput = function() {
+    errM = slopeErrorMax*(mErrorSlider.value/100);
+    updateGraph();
+}
+
+var xErrorBars = document.getElementById('xErrorBars');
+xErrorBars.oninput = function() {
+    xErrorBarsVisible = xErrorBars.checked;
+    updateGraph();
+}
+
+var mErrorLines = document.getElementById('mErrorLines');
+mErrorLines.oninput = function() {
+    mErrorLinesVisible = mErrorLines.checked;
+    updateGraph();
+}
+
+var yErrorLines = document.getElementById('yErrorLines');
+yErrorLines.oninput = function() {
+    yErrorLinesVisible = yErrorLines.checked;
+    updateGraph();
+}
+
+
+/* ---------trace update functions--------- */
+
 /**
- * Updates the grapm to reflect changes caused by user input.
+ * Updates trace0 to reflect changes in stored variables.
+ * Note that refreshGraph() must be called for changes to appear on graph.
+ */
+function updateTrace0() {
+    trace0 = {
+        x: [0, 10],
+        y: [0, m*10],
+        mode: 'lines'
+    };
+}
+
+/**
+ * Updates trace1 to reflect changes in stored variables.
+ * @post Note that refreshGraph() must be called for changes to appear on graph.
+ */
+function updateTrace1() {
+    trace1 = {
+        x: [xSliderValue],
+        y: [m*xSliderValue],
+        error_y: {
+            type: 'constant',
+            value: errY
+        },
+        error_x: {
+            type: 'constant',
+            value: errX,
+            visible: xErrorBarsVisible
+        },
+        type: 'scatter'
+    };
+}
+
+/**
+ * Updates the slope error line traces to reflect changes in stored variables.
+ * @post Note that refreshGraph() must be called for changes to appear on graph.
+ */
+function updateSlopeErrorLines() {
+    slopeUpperBound = {
+        x: [0, 10],
+        y: [0, (m+errM)*10],
+        mode: 'lines',
+        visible: mErrorLinesVisible
+    };
+
+    slopeLowerBound = {
+        x: [0, 10],
+        y: [0, (m-errM)*10],
+        mode: 'lines',
+        visible: mErrorLinesVisible
+    };
+}
+
+function updateYErrorLines() {
+    yUpperBound = {
+        x: [0, 10],
+        y: [m*xSliderValue + errY, m*xSliderValue + errY],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2
+        },
+        visible: yErrorLinesVisible
+    };
+
+    yLowerBound = {
+        x: [0, 10],
+        y: [m*xSliderValue - errY, m*xSliderValue - errY],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2
+        },
+        visible: yErrorLinesVisible
+    }
+}
+
+/**
+ * Updates all elements on the graph to reflect changes caused by user input.
  */
 function updateGraph() {
+
+    updateTrace0();
+
+    errY = totalError(xSliderValue, m, errX, errM);
+    updateTrace1();
+
+    updateSlopeErrorLines();
+
+    updateYErrorLines();
+    
+    refreshGraph();
+}
+
+/**
+ * Refreshes the data array and calls Plotly.react to make changes appear on graph.
+ */
+function refreshGraph() {
+    data = [
+        trace0,
+        trace1,
+        slopeUpperBound,
+        slopeLowerBound,
+        yUpperBound,
+        yLowerBound
+    ];
 
     Plotly.react(graph, data, layout);
 }

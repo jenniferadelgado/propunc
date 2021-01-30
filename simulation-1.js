@@ -90,9 +90,10 @@ xSlider.oninput = function() {
     updateGraph();
 }
 
+var xErrorMax = 2;
 var errorSlider = document.getElementById('errorSlider');
 errorSlider.oninput = function() {
-    errX = 2*(errorSlider.value/100);
+    errX = xErrorMax*(errorSlider.value/100);
     updateGraph();
 }
 

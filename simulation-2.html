@@ -25,7 +25,7 @@
 					<input type='range' min='1' max='100' value='50' class='slider' id='xErrorSlider'>
 					<br>
 					<label for='mSlider'>Change the slope of the line</label>
-					<input type='range' min='1' max='99' value='50' class='slider' id='mSlider'>
+					<input type='range' min='1' max='100' value='50' class='slider' id='mSlider'>
 					<br>
 					<label for='mErrorSlider'>Change the uncertainty on the slope</label>
 					<input type='range' min='1' max='100' value='50' class='slider' id='mErrorSlider'>
@@ -35,6 +35,15 @@
 
 		<div class='toolbar' id='toolbar'>
 				<h3 class='title'>Toolbar</h3>
+
+				<input type='checkbox' id='xErrorBars'>
+				<label for='xErrorBars'> Show horizontal error bars</label>
+				<br>
+				<input type='checkbox' id='mErrorLines'>
+				<label for='mErrorLines'> Show slope error lines</label>
+				<br>
+				<input type='checkbox' id='yErrorLines'>
+				<label for='yErrorLines'> Show error lines for &delta;y</label>
 		</div>
 	</div>
 	
