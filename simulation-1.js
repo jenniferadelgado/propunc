@@ -152,20 +152,26 @@ errorSlider.oninput = function() {
 var horizErrBar = document.getElementById('xError');
 horizErrBar.oninput = function() {
     horizontalErrorBarVisible = horizErrBar.checked;
-    updateGraph();
+
+    updateTrace1();
+
+    refreshGraph();
 }
 
 var errBound = document.getElementById('errorBox');
 errBound.oninput = function() {
     errorBoundsVisible = errBound.checked;
-    updateGraph();
+
+    updateErrorBounds();
+
+    refreshGraph();
 }
 
 /**
- * Updates the graph to immediately reflect changes caused by user input.
+ * Updates trace1 to reflect changes in stored variables.
+ * @post Note that refreshGraph() must be called for changes to appear on graph.
  */
-function updateGraph() {
-    errY = yError3rdOrder(xCoords[sliderValue], errX);
+function updateTrace1() {
     trace1 = {
         x: [xCoords[sliderValue]],
         y: [yCoords[sliderValue]],
@@ -180,7 +186,13 @@ function updateGraph() {
         },
         type: 'scatter'
     };
+}
 
+/**
+ * Updates the traces associated with the error bounds to reflect changes in stored variables.
+ * @post Note that refreshGraph() must be called for changes to appear on graph.
+ */
+function updateErrorBounds() {
     upperBound = {
         x: [0,10],
         y: [yCoords[sliderValue]+errY, yCoords[sliderValue]+errY],
@@ -224,7 +236,25 @@ function updateGraph() {
         },
         visible: errorBoundsVisible
     }
+}
 
+/**
+ * Updates all elements on the graph to reflect changes caused by user input.
+ */
+function updateGraph() {
+    errY = yError3rdOrder(xCoords[sliderValue], errX);
+
+    updateTrace1();
+
+    updateErrorBounds();
+
+    refreshGraph();
+}
+
+/**
+ * Refreshes the data array and calls Plotly.react to make changes appear on graph.
+ */
+function refreshGraph() {
     data = [
         trace0,
         trace1,

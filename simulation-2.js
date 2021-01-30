@@ -81,3 +81,19 @@ var layout = {
 
 graph = document.getElementById('graph');
 Plotly.newPlot(graph, data, layout, {staticPlot: true});
+
+/* ------------Update Graph On Input-------------- */
+
+var xSlider = document.getElementById('xSlider');
+xSlider.oninput = function() {
+    xSliderValue = xSlider.value;
+    updateGraph();
+}
+
+/**
+ * Updates the grapm to reflect changes caused by user input.
+ */
+function updateGraph() {
+
+    Plotly.react(graph, data, layout);
+}
