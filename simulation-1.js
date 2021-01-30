@@ -45,65 +45,12 @@ var sliderValue = 50;
 var errX = 1;
 var errY = yError3rdOrder(xCoords[sliderValue], errX);
 var horizontalErrorBarVisible = false;
-var trace1 = {
-    x: [xCoords[sliderValue]],
-    y: [yCoords[sliderValue]],
-    error_y: {
-        type: 'constant',
-        value: errY
-    },
-    error_x: {
-        type: 'constant',
-        value: errX,
-        visible: horizontalErrorBarVisible
-    },
-    type: 'scatter'
-};
+var trace1;
+updateTrace1();
 
 var errorBoundsVisible = false;
-var upperBound = {
-    x: [0,10],
-    y: [yCoords[sliderValue]+errY, yCoords[sliderValue]+errY],
-    mode: 'lines',
-    line: {
-        dash: 'dot',
-        width: 2
-    },
-    visible: errorBoundsVisible
-};
-
-var lowerBound = {
-    x: [0,10],
-    y: [yCoords[sliderValue]-errY, yCoords[sliderValue]-errY],
-    mode: 'lines',
-    line: {
-        dash: 'dot',
-        width: 2
-    },
-    visible: errorBoundsVisible
-}
-
-var leftBound = {
-    x: [xCoords[sliderValue]-errX, xCoords[sliderValue]-errX],
-    y: [0,10],
-    mode: 'lines',
-    line: {
-        dash: 'dot',
-        width: 2
-    },
-    visible: errorBoundsVisible
-}
-
-var rightBound = {
-    x: [xCoords[sliderValue]+errX, xCoords[sliderValue]+errX],
-    y: [0,10],
-    mode: 'lines',
-    line: {
-        dash: 'dot',
-        width: 2
-    },
-    visible: errorBoundsVisible
-}
+var upperBound, lowerBound, leftBound, rightBound;
+updateErrorBounds();
 
 var data = [
     trace0,
