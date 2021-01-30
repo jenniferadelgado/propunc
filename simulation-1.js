@@ -147,7 +147,8 @@ function updateErrorBounds() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2
+            width: 2,
+            color: 'rgb(255, 0, 0)'
         },
         visible: errorBoundsVisible
     }
@@ -158,7 +159,8 @@ function updateErrorBounds() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2
+            width: 2,
+            color: 'rgb(255, 0, 0)'
         },
         visible: errorBoundsVisible
     }
@@ -169,7 +171,8 @@ function updateErrorBounds() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2
+            width: 2,
+            color: 'rgb(255, 0, 0)'
         },
         visible: errorBoundsVisible
     }
@@ -180,7 +183,8 @@ function updateErrorBounds() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2
+            width: 2,
+            color: 'rgb(255, 0, 0)'
         },
         visible: errorBoundsVisible
     }

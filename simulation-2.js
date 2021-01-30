@@ -56,17 +56,43 @@ var yErrorLinesVisible = false;
 var yUpperBound, yLowerBound;
 updateYErrorLines();
 
+var xErrorLinesVisible = false;
+var leftBound, rightBound;
+updateXErrorLines();
+
+var y_xErrorLinesVisible = false;
+var errY_x = errorFromX(m, errX);
+var y_xUpperBound, y_xLowerBound;
+updateY_xErrorLines();
+
+var y_mErrorLinesVisible = false;
+var errY_m = errorFromSlope(xSliderValue, errM);
+var y_mUpperBound, y_mLowerBound;
+updateY_mErrorLines();
+
 var data = [
     trace0,
     trace1,
     slopeUpperBound,
     slopeLowerBound,
     yUpperBound,
-    yLowerBound
+    yLowerBound,
+    leftBound,
+    rightBound,
+    y_xUpperBound,
+    y_xLowerBound,
+    y_mUpperBound,
+    y_mLowerBound
 ];
 
 var layout = {
-    showlegend: false,
+    showlegend: true,
+    legend: {
+        x: 0,
+        xanchor: 'left',
+        y: 1,
+        bgcolor: 'rgba(0,0,0,0)'
+    },
     margin: {
         l: 20,
         r: 20,
@@ -104,7 +130,7 @@ xErrorSlider.oninput = function() {
     updateGraph();
 }
 
-var slopeMax = 3;
+var slopeMax = 2;
 var slopeSlider = document.getElementById('mSlider');
 slopeSlider.oninput = function() {
     m = slopeMax*(slopeSlider.value/100);
@@ -136,6 +162,24 @@ yErrorLines.oninput = function() {
     updateGraph();
 }
 
+var xErrorLines = document.getElementById('xErrorLines');
+xErrorLines.oninput = function() {
+    xErrorLinesVisible = xErrorLines.checked;
+    updateGraph();
+}
+
+var y_xErrorLines = document.getElementById('y_xErrorLines');
+y_xErrorLines.oninput = function() {
+    y_xErrorLinesVisible = y_xErrorLines.checked;
+    updateGraph();
+}
+
+var y_mErrorLines = document.getElementById('y_mErrorLines');
+y_mErrorLines.oninput = function() {
+    y_mErrorLinesVisible = y_mErrorLines.checked;
+    updateGraph();
+}
+
 
 /* ---------trace update functions--------- */
 
@@ -147,7 +191,8 @@ function updateTrace0() {
     trace0 = {
         x: [0, 10],
         y: [0, m*10],
-        mode: 'lines'
+        mode: 'lines',
+        showlegend: false
     };
 }
 
@@ -168,7 +213,8 @@ function updateTrace1() {
             value: errX,
             visible: xErrorBarsVisible
         },
-        type: 'scatter'
+        type: 'scatter',
+        showlegend: false
     };
 }
 
@@ -181,6 +227,11 @@ function updateSlopeErrorLines() {
         x: [0, 10],
         y: [0, (m+errM)*10],
         mode: 'lines',
+        line: {
+            width: 2,
+            color: 'rgb(255, 0, 0)'
+        },
+        name: 'Slope error',
         visible: mErrorLinesVisible
     };
 
@@ -188,6 +239,11 @@ function updateSlopeErrorLines() {
         x: [0, 10],
         y: [0, (m-errM)*10],
         mode: 'lines',
+        line: {
+            width: 2,
+            color: 'rgb(255, 0, 0)'
+        },
+        showlegend: false,
         visible: mErrorLinesVisible
     };
 }
@@ -199,9 +255,11 @@ function updateYErrorLines() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2
+            width: 2,
+            color: 'rgb(0, 153, 51)'
         },
-        visible: yErrorLinesVisible
+        visible: yErrorLinesVisible,
+        name: 'y error'
     };
 
     yLowerBound = {
@@ -210,9 +268,97 @@ function updateYErrorLines() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2
+            width: 2,
+            color: 'rgb(0, 153, 51)'
         },
-        visible: yErrorLinesVisible
+        visible: yErrorLinesVisible,
+        showlegend: false
+    }
+}
+
+function updateXErrorLines() {
+    leftBound = {
+        x: [xSliderValue - errX, xSliderValue - errX],
+        y: [0, 10],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(204, 0, 0)'
+        },
+        visible: xErrorLinesVisible,
+        name: 'x error'
+    };
+
+    rightBound = {
+        x: [xSliderValue + errX, xSliderValue + errX],
+        y: [0, 10],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(204, 0, 0)'
+        },
+        visible: xErrorLinesVisible,
+        showlegend: false
+    };
+}
+
+function updateY_xErrorLines() {
+    errY_x = errorFromX(m, errX);
+    y_xUpperBound = {
+        x: [0, 10],
+        y: [m*xSliderValue + errY_x, m*xSliderValue + errY_x],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(153, 51, 255)'
+        },
+        visible: y_xErrorLinesVisible,
+        name: 'y_x error'
+    };
+
+    y_xLowerBound = {
+        x: [0, 10],
+        y: [m*xSliderValue - errY_x, m*xSliderValue - errY_x],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(153, 51, 255)'
+        },
+        visible: y_xErrorLinesVisible,
+        showlegend: false
+    }
+}
+
+function updateY_mErrorLines() {
+    errY_m = errorFromSlope(xSliderValue, errM);
+    y_mUpperBound = {
+        x: [0, 10],
+        y: [m*xSliderValue + errY_m, m*xSliderValue + errY_m],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(51, 204, 204)'
+        },
+        visible: y_mErrorLinesVisible,
+        name: 'y_m error'
+    };
+
+    y_mLowerBound = {
+        x: [0, 10],
+        y: [m*xSliderValue - errY_m, m*xSliderValue - errY_m],
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(51, 204, 204)'
+        },
+        visible: y_mErrorLinesVisible,
+        showlegend: false
     }
 }
 
@@ -229,6 +375,12 @@ function updateGraph() {
     updateSlopeErrorLines();
 
     updateYErrorLines();
+
+    updateXErrorLines();
+
+    updateY_xErrorLines();
+
+    updateY_mErrorLines();
     
     refreshGraph();
 }
@@ -243,7 +395,13 @@ function refreshGraph() {
         slopeUpperBound,
         slopeLowerBound,
         yUpperBound,
-        yLowerBound
+        yLowerBound,
+        leftBound,
+        rightBound,
+        y_xUpperBound,
+        y_xLowerBound,
+        y_mUpperBound,
+        y_mLowerBound
     ];
 
     Plotly.react(graph, data, layout);
