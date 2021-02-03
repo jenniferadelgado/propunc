@@ -2,7 +2,14 @@
 /* ----- Variables and Constants ------- */
 const G = 9.8; // acceleration due to gravity
 var theta = Math.PI/4; // the launch angle measured in radians
+var thetaError = Math.PI/8;
 var v = 10; // initial velocity
+var vError = 5;
+
+var numSteps = 100;
+var stepSize;
+var xCoords = [];
+var yCoords = [];
 
 /* ------ Projectile Path Methods ------- */
 
@@ -39,16 +46,39 @@ function verticalRange() {
     return (v*v)/(2*G);
 }
 
-var numSteps = 100;
-var stepSize = horizontalRange()/numSteps;
-var xCoords = [];
-var yCoords = [];
-updateProjectilePath();
+/**
+ * Calculates the error on the landing position due to uncertainty on initial velocity.
+ * @return {number}
+ */
+function errorFromVelocity() {
+    let partial = 2*v*Math.sin(2*theta)/G;
+    return Math.abs(partial*vError);
+}
+
+/**
+ * Calculates the error on the landing position due to uncertainty on the launch angle.
+ * @return {number}
+ */
+function errorFromAngle() {
+    let partial = 2*v*v*Math.cos(2*theta)/G;
+    return Math.abs(partial*thetaError);
+}
+
+/**
+ * Calculates the total uncertainty on the landing position.
+ * @return {number} the total error on x.
+ */
+function totalError() {
+    let delX_v = errorFromVelocity();
+    let delX_theta = errorFromAngle();
+    return Math.sqrt( (delX_v*delX_v) + (delX_theta*delX_theta) );
+}
 
 
 /* -------------- Initial Graph Setup ---------------- */
 
 var projectile;
+updateProjectilePath();
 
 var target;
 updateTarget();
@@ -67,7 +97,7 @@ var layout = {
         b: 20
     },
     xaxis: {
-        range: [0, 50],
+        range: [-10, 50],
         autorange: false
     },
     yaxis: {
@@ -91,10 +121,24 @@ velocitySlider.oninput = function() {
     updateGraph();
 }
 
+var velocityErrorMax = 10;
+var velocityErrorSlider = document.getElementById('velocityErrorSlider');
+velocityErrorSlider.oninput = function() {
+    vError = velocityErrorMax*(velocityErrorSlider.value/100);
+    updateGraph();
+}
+
 var angleMax = Math.PI/2;
 var angleSlider = document.getElementById('angleSlider');
 angleSlider.oninput = function() {
     theta = angleMax*(angleSlider.value/100);
+    updateGraph();
+}
+
+var angleErrorMax = Math.PI/4;
+var angleErrorSlider = document.getElementById('angleErrorSlider');
+angleErrorSlider.oninput = function() {
+    thetaError = angleErrorMax*(angleErrorSlider.value/100);
     updateGraph();
 }
 
@@ -127,7 +171,11 @@ function updateProjectilePath() {
 function updateTarget() {
     target = {
         x: [xCoords[100]],
-        y: [yCoords[100]]
+        y: [yCoords[100]],
+        error_x: {
+            type: 'constant',
+            value: totalError()
+        }
     };
 }
 
