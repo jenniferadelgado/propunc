@@ -18,6 +18,7 @@ function projectileHeight(x) {
 /**
  * Calculates where the projectile will land given an initial velocity and launch angle.
  * @return {number} The landing distance of the projectile.
+ */
 function landingDistance() {
     return v*v*Math.sin(2*theta)/G;
 }
@@ -47,14 +48,14 @@ updateProjectilePath();
 
 /* -------------- Initial Graph Setup ---------------- */
 
-var projectile;/* = {
-    x: xCoords,
-    y: yCoords,
-    mode: 'lines'
-};*/
+var projectile;
+
+var target;
+updateTarget();
 
 var data = [
-    projectile
+    projectile,
+    target
 ];
 
 var layout = {
@@ -66,11 +67,11 @@ var layout = {
         b: 20
     },
     xaxis: {
-        range: [0, horizontalRange() + horizontalRange()/4],
+        range: [0, 50],
         autorange: false
     },
     yaxis: {
-        range: [0, verticalRange() + verticalRange()/4],
+        range: [0, 25],
         autorange: false
     }
 };
@@ -104,7 +105,7 @@ angleSlider.oninput = function() {
  * Updates the path of the projectile.
  */
 function updateProjectilePath() {
-    stepSize = horizontalRange()/numSteps;
+    stepSize = landingDistance()/numSteps;
     xCoords = [];
     yCoords = [];
 
@@ -121,11 +122,23 @@ function updateProjectilePath() {
 }
 
 /**
+ * Updates the landing target for the projectile.
+ */
+function updateTarget() {
+    target = {
+        x: [xCoords[100]],
+        y: [yCoords[100]]
+    };
+}
+
+/**
  * Updates all elements on the graph to reflect changes caused by user input.
  */
 function updateGraph() {
     
     updateProjectilePath();
+
+    updateTarget();
     
     refreshGraph();
 }
@@ -135,8 +148,10 @@ function updateGraph() {
  */
 function refreshGraph() {
     data = [
-        projectile
+        projectile,
+        target
     ];
+
 
     Plotly.react(graph, data, layout);
 }
