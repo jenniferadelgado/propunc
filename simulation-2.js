@@ -120,64 +120,116 @@ Plotly.newPlot(graph, data, layout, {staticPlot: true});
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
     xSliderValue = xSlider.value/10;
-    updateGraph();
+
+    errY = totalError(xSliderValue, m, errX, errM);
+    updateTrace1();
+
+    updateYErrorLines();
+
+    updateXErrorLines();
+
+    updateY_xErrorLines();
+
+    updateY_mErrorLines();
+    
+    refreshGraph();
 }
 
 var xErrorMax = 2;
 var xErrorSlider = document.getElementById('xErrorSlider');
 xErrorSlider.oninput = function() {
     errX = xErrorMax*(xErrorSlider.value/100);
-    updateGraph();
+
+    errY = totalError(xSliderValue, m, errX, errM);
+    updateTrace1();
+
+    updateYErrorLines();
+
+    updateXErrorLines();
+
+    updateY_xErrorLines();
+    
+    refreshGraph();
 }
 
 var slopeMax = 2;
 var slopeSlider = document.getElementById('mSlider');
 slopeSlider.oninput = function() {
     m = slopeMax*(slopeSlider.value/100);
-    updateGraph();
+
+    updateTrace0();
+
+    errY = totalError(xSliderValue, m, errX, errM);
+    updateTrace1();
+
+    updateSlopeErrorLines();
+
+    updateYErrorLines();
+
+    updateY_xErrorLines();
+
+    updateY_mErrorLines();
+    
+    refreshGraph();
 }
 
 var slopeErrorMax = 1;
 var mErrorSlider = document.getElementById('mErrorSlider');
 mErrorSlider.oninput = function() {
     errM = slopeErrorMax*(mErrorSlider.value/100);
-    updateGraph();
+
+    errY = totalError(xSliderValue, m, errX, errM);
+    updateTrace1();
+
+    updateSlopeErrorLines();
+
+    updateYErrorLines();
+
+    updateY_mErrorLines();
+    
+    refreshGraph();
 }
 
 var xErrorBars = document.getElementById('xErrorBars');
 xErrorBars.oninput = function() {
     xErrorBarsVisible = xErrorBars.checked;
-    updateGraph();
+    updateTrace1();
+    refreshGraph();
 }
 
 var mErrorLines = document.getElementById('mErrorLines');
 mErrorLines.oninput = function() {
     mErrorLinesVisible = mErrorLines.checked;
-    updateGraph();
+    updateSlopeErrorLines();
+    refreshGraph();
 }
 
 var yErrorLines = document.getElementById('yErrorLines');
 yErrorLines.oninput = function() {
     yErrorLinesVisible = yErrorLines.checked;
-    updateGraph();
+    updateYErrorLines();
+    refreshGraph();
 }
 
 var xErrorLines = document.getElementById('xErrorLines');
 xErrorLines.oninput = function() {
     xErrorLinesVisible = xErrorLines.checked;
-    updateGraph();
+    updateXErrorLines();
+    refreshGraph();
 }
 
 var y_xErrorLines = document.getElementById('y_xErrorLines');
 y_xErrorLines.oninput = function() {
     y_xErrorLinesVisible = y_xErrorLines.checked;
-    updateGraph();
+    updateY_xErrorLines();
+    refreshGraph();
 }
 
 var y_mErrorLines = document.getElementById('y_mErrorLines');
 y_mErrorLines.oninput = function() {
     y_mErrorLinesVisible = y_mErrorLines.checked;
-    updateGraph();
+    updateY_mErrorLines();
+    refreshGraph();
 }
 
 
