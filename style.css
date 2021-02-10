@@ -13,10 +13,23 @@ body {
 	width: 970px;
 	height: 860px;
 	margin: auto;
+	margin-top: 40px;
 	background-color: white;
 	border: solid red;
-	border-width: 40px 5px 5px 5px;
+	border-width: 5px;
 	border-radius: 10px;
+}
+
+.sim1 {
+	border-color: red;
+}
+
+.sim2 {
+	border-color: green;
+}
+
+.sim4 {
+	border-color: blue;
 }
 
 .tabs {
@@ -24,13 +37,33 @@ body {
 	top: -35px;
 	width: 810px;
 	height: 30px;
+	padding-left: 10px;
 }
 
 .tab {
 	height: 100%;
 	background-color: white;
-	border: solid black;
-	border-radius: 5px;
+	border: none;
+	border-radius: 10px 10px 0 0;
+	
+	float: left;
+}
+
+.tabs.a {
+	text-decoration: none;
+	text-color: white;
+}
+
+.tab1 {
+	background-color: red;
+}
+
+.tab2 {
+	background-color: green;
+}
+
+.tab3 {
+	background-color: blue;
 }
 
 .toolbar {
@@ -40,7 +73,8 @@ body {
 	width: 150px;
 	height: 100%;
 	padding-left: 5px;
-	border: 5px solid red;
+	border: 5px solid;
+	border-color: inherit;
 	border-radius: 10px;
 	background: rgba(255, 0, 0, 0.2);
 }
