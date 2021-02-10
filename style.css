@@ -45,13 +45,9 @@ body {
 	background-color: white;
 	border: none;
 	border-radius: 10px 10px 0 0;
-	
 	float: left;
-}
-
-.tabs.a {
-	text-decoration: none;
-	text-color: white;
+	color: white;
+	cursor: pointer;
 }
 
 .tab1 {
