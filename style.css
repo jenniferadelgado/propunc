@@ -28,6 +28,9 @@ body {
 
 .tab {
 	height: 100%;
+	background-color: white;
+	border: solid black;
+	border-radius: 5px;
 }
 
 .toolbar {
