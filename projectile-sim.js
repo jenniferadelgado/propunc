@@ -174,7 +174,10 @@ function updateTarget() {
         y: [yCoords[100]],
         error_x: {
             type: 'constant',
-            value: totalError()
+            value: totalError(),
+            thickness: 6,
+            width: 8,
+            color: 'red'
         }
     };
 }
