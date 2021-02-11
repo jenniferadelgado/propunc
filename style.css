@@ -48,6 +48,11 @@ body {
 	float: left;
 	color: white;
 	cursor: pointer;
+	transition-duration: 0.4s;
+}
+
+.tab:hover {
+	box-shadow: 0 0 5px 3px rgba(0,0,0,0.24);
 }
 
 .tab1 {
@@ -72,7 +77,6 @@ body {
 	border: 5px solid;
 	border-color: inherit;
 	border-radius: 10px;
-	background: rgba(255, 0, 0, 0.2);
 }
 
 .toolbar.title {
