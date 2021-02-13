@@ -18,16 +18,16 @@ var yCoords = [];
  * @param {number} x - The horizontal position of the projectile (meters)
  * @return {number} The vertical position of the projectile.
  */
-function projectileHeight(x) {
-    return ( Math.tan(theta)*x) - ( (G*x*x) / (2*v*v*Math.cos(theta)*Math.cos(theta)) );
+function projectileHeight(x, theta0, v0) {
+    return ( Math.tan(theta0)*x) - ( (G*x*x) / (2*v0*v0*Math.cos(theta0)*Math.cos(theta0)) );
 }
 
 /**
  * Calculates where the projectile will land given an initial velocity and launch angle.
  * @return {number} The landing distance of the projectile.
  */
-function landingDistance() {
-    return v*v*Math.sin(2*theta)/G;
+function landingDistance(theta0, v0) {
+    return v0*v0*Math.sin(2*theta0)/G;
 }
 
 /**
@@ -83,9 +83,19 @@ updateProjectilePath();
 var target;
 updateTarget();
 
+var upperBound, lowerBound;
+updateErrorBounds();
+
+var vErrorUpperBound, vErrorLowerBound;
+updateVelocityErrorBounds();
+
 var data = [
     projectile,
-    target
+    target,
+    upperBound,
+    lowerBound,
+    vErrorUpperBound,
+    vErrorLowerBound
 ];
 
 var layout = {
@@ -149,19 +159,96 @@ angleErrorSlider.oninput = function() {
  * Updates the path of the projectile.
  */
 function updateProjectilePath() {
-    stepSize = landingDistance()/numSteps;
+    stepSize = landingDistance(theta, v)/numSteps;
     xCoords = [];
     yCoords = [];
 
     for (var i = 0; i <= numSteps; i++) {
         xCoords[i] = i*stepSize;
-        yCoords[i] = projectileHeight(xCoords[i]);
+        yCoords[i] = projectileHeight(xCoords[i], theta, v);
     }
 
     projectile = {
         x: xCoords,
         y: yCoords,
         mode: 'lines'
+    };
+}
+
+function updateErrorBounds() {
+    let verr = errorFromVelocity();
+    let terr = errorFromAngle();
+    let stepSizeUpper = landingDistance(theta+terr, v+verr)/numSteps;
+    let stepSizeLower = landingDistance(theta-terr, v-verr)/numSteps;
+    let xCoords_upper = [];
+    let yCoords_upper = [];
+    let xCoords_lower = [];
+    let yCoords_lower = [];
+    
+    for (var i = 0; i <= numSteps; i++) {
+        xCoords_upper[i] = i*stepSizeUpper;
+        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta+terr, v+verr);
+        xCoords_lower[i] = i*stepSizeLower;
+        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta-terr, v+verr);
+    }
+
+    upperBound = {
+        x: xCoords_upper,
+        y: yCoords_upper,
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(255, 0, 0)'
+        }
+    };
+    lowerBound = {
+        x: xCoords_lower,
+        y: yCoords_lower,
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(255, 0, 0)'
+        }
+    };
+}
+
+function updateVelocityErrorBounds() {
+    let err = errorFromVelocity();
+    let stepSizeUpper = landingDistance(theta, v+err)/numSteps;
+    let stepSizeLower = landingDistance(theta, v-err)/numSteps;
+    let xCoords_upper = [];
+    let yCoords_upper = [];
+    let xCoords_lower = [];
+    let yCoords_lower = [];
+    
+    for (var i = 0; i <= numSteps; i++) {
+        xCoords_upper[i] = i*stepSizeUpper;
+        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta, v+err);
+        xCoords_lower[i] = i*stepSizeLower;
+        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta, v-err);
+    }
+
+    vErrorUpperBound = {
+        x: xCoords_upper,
+        y: yCoords_upper,
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(0, 153, 51)'
+        }
+    };
+    vErrorLowerBound = {
+        x: xCoords_lower,
+        y: yCoords_lower,
+        mode: 'lines',
+        line: {
+            dash: 'dot',
+            width: 2,
+            color: 'rgb(0, 153, 51)'
+        }
     };
 }
 
@@ -189,6 +276,10 @@ function updateGraph() {
     
     updateProjectilePath();
 
+    updateErrorBounds();
+    
+    updateVelocityErrorBounds();
+
     updateTarget();
     
     refreshGraph();
@@ -200,7 +291,11 @@ function updateGraph() {
 function refreshGraph() {
     data = [
         projectile,
-        target
+        target,
+        upperBound,
+        lowerBound,
+        vErrorUpperBound,
+        vErrorLowerBound
     ];
 
 
