@@ -28,6 +28,10 @@ body {
 	border-color: green;
 }
 
+.sim3 {
+	border-color: rgb(139, 39, 227);
+}
+
 .sim4 {
 	border-color: blue;
 }
@@ -64,6 +68,10 @@ body {
 }
 
 .tab3 {
+	background-color: rgb(139, 39, 227);
+}
+
+.tab4 {
 	background-color: blue;
 }
 

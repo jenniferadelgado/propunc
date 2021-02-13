@@ -176,6 +176,7 @@ function updateProjectilePath() {
 }
 
 function updateErrorBounds() {
+    // Problem might be that I'm calculating an error on x, but trying to apply it in a calculation of projectile height...
     let verr = errorFromVelocity();
     let terr = errorFromAngle();
     let stepSizeUpper = landingDistance(theta+terr, v+verr)/numSteps;
