@@ -91,11 +91,11 @@ updateVelocityErrorBounds();
 
 var data = [
     projectile,
-    target,
+    target/*,
     upperBound,
     lowerBound,
     vErrorUpperBound,
-    vErrorLowerBound
+    vErrorLowerBound*/
 ];
 
 var layout = {
@@ -292,11 +292,11 @@ function updateGraph() {
 function refreshGraph() {
     data = [
         projectile,
-        target,
+        target/*,
         upperBound,
         lowerBound,
         vErrorUpperBound,
-        vErrorLowerBound
+        vErrorLowerBound*/
     ];
 
 

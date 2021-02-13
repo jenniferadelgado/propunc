@@ -22,6 +22,7 @@ body {
 
 .sim1 {
 	border-color: red;
+	height: 760px;
 }
 
 .sim2 {
@@ -30,6 +31,7 @@ body {
 
 .sim3 {
 	border-color: rgb(139, 39, 227);
+	height: 960px;
 }
 
 .sim4 {
@@ -108,7 +110,7 @@ body {
 
 .slidecontainer {
 	width: 100%;
-	height: 200px;
+	
 }
 
 .slider {
