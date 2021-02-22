@@ -315,7 +315,7 @@ function updateYErrorLines() {
         },
         visible: yErrorLinesVisible,
         showlegend: false
-    }
+    };
 }
 
 function updateXErrorLines() {
@@ -372,7 +372,7 @@ function updateY_xErrorLines() {
         },
         visible: y_xErrorLinesVisible,
         showlegend: false
-    }
+    };
 }
 
 function updateY_mErrorLines() {
@@ -401,7 +401,7 @@ function updateY_mErrorLines() {
         },
         visible: y_mErrorLinesVisible,
         showlegend: false
-    }
+    };
 }
 
 /**
