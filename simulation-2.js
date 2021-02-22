@@ -72,17 +72,7 @@ updateY_mErrorLines();
 
 var data = [
     trace0,
-    trace1,
-    slopeUpperBound,
-    slopeLowerBound,
-    yUpperBound,
-    yLowerBound,
-    leftBound,
-    rightBound,
-    y_xUpperBound,
-    y_xLowerBound,
-    y_mUpperBound,
-    y_mLowerBound
+    trace1
 ];
 
 var layout = {

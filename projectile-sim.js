@@ -91,11 +91,7 @@ updateVelocityErrorBounds();
 
 var data = [
     projectile,
-    target/*,
-    upperBound,
-    lowerBound,
-    vErrorUpperBound,
-    vErrorLowerBound*/
+    target
 ];
 
 var layout = {

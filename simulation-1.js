@@ -54,11 +54,7 @@ updateErrorBounds();
 
 var data = [
     trace0,
-    trace1,
-    upperBound,
-    lowerBound,
-    leftBound,
-    rightBound
+    trace1
 ];
 
 var layout = {
