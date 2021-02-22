@@ -109,6 +109,10 @@ var layout = {
         r: 20,
         t: 20,
         b: 20
+    },
+    xaxis: {
+        range: [-10, 10],
+        autorange: false
     }
 };
 
@@ -322,9 +326,13 @@ function updateYErrorLines() {
 
 function updateXErrorLines() {
     let maxY = powerLaw(10);
+    let minY = (b == 3) ? powerLaw(-10) : 0;
+    let topOfErrorBar = currentY+totalError();
+    let bottom = (currentY-totalError() < minY) ? currentY-totalError() : minY;
+    let top = (maxY > topOfErrorBar) ? maxY : topOfErrorBar;
     leftBound = {
         x: [x-xError, x-xError],
-        y: [-50, maxY],
+        y: [bottom, top],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -337,7 +345,7 @@ function updateXErrorLines() {
 
     rightBound = {
         x: [x+xError, x+xError],
-        y: [-50, maxY],
+        y: [bottom, top],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -358,7 +366,7 @@ function updateY_xErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(153, 51, 255)'
+            color: 'rgb(204, 0, 0)'
         },
         visible: y_xErrorLinesVisible,
         name: 'y_x error'
@@ -371,7 +379,7 @@ function updateY_xErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(153, 51, 255)'
+            color: 'rgb(204, 0, 0)'
         },
         visible: y_xErrorLinesVisible,
         showlegend: false

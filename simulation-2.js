@@ -355,7 +355,7 @@ function updateY_xErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(153, 51, 255)'
+            color: 'rgb(204, 0, 0)'
         },
         visible: y_xErrorLinesVisible,
         name: 'y_x error'
@@ -368,7 +368,7 @@ function updateY_xErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(153, 51, 255)'
+            color: 'rgb(204, 0, 0)'
         },
         visible: y_xErrorLinesVisible,
         showlegend: false
