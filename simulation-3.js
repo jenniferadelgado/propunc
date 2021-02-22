@@ -92,6 +92,55 @@ Plotly.newPlot(graph, data, layout);
 
 /* ---------oninput functions---------- */
 
+var xSlider = document.getElementById('xSlider');
+xSlider.oninput = function() {
+    x = 20*(xSlider.value/100) - 10;
+
+    updateTrace1();
+    refreshGraph();
+}
+
+var xErrorSlider = document.getElementById('xErrorSlider');
+xErrorSlider.oninput = function() {
+    xError = 2*(xErrorSlider.value/100);
+
+    updateTrace1();
+    refreshGraph();
+}
+
+var mSlider = document.getElementById('mSlider');
+mSlider.oninput = function() {
+    m = 4*(mSlider.value/100);
+
+    updateTrace0();
+    updateTrace1();
+    refreshGraph();
+}
+
+var mErrorSlider = document.getElementById('mErrorSlider');
+mErrorSlider.oninput = function() {
+    mError = 2*(mErrorSlider.value/100);
+
+    updateTrace1();
+    refreshGraph();
+}
+
+var bSlider = document.getElementById('bSlider');
+bSlider.oninput = function() {
+    b = 4*(bSlider.value/100);
+
+    updateTrace0();
+    updateTrace1();
+    refreshGraph();
+}
+
+var bErrorSlider = document.getElementById('bErrorSlider');
+bErrorSlider.oninput = function() {
+    bError = 2*(bErrorSlider.value/100);
+
+    updateTrace1();
+    refreshGraph();
+}
 
 /* ---------trace update functions--------- */
 
