@@ -71,6 +71,14 @@ var currentY; // Stores the current y coordinate of the measurement point.
 var trace1;
 updateTrace1();
 
+var mErrorLinesVisible = false;
+var mUpperBound, mLowerBound;
+updateMErrorLines();
+
+var bErrorLinesVisible = false;
+var bUpperBound, bLowerBound;
+updateBErrorLines();
+
 var yErrorLinesVisible = false;
 var yUpperBound, yLowerBound;
 updateYErrorLines();
@@ -105,7 +113,7 @@ var layout = {
         bgcolor: 'rgba(0,0,0,0)'
     },
     margin: {
-        l: 20,
+        l: 30,
         r: 20,
         t: 20,
         b: 20
@@ -129,6 +137,8 @@ xSlider.oninput = function() {
     x = 20*(xSlider.value/100) - 10;
 
     updateTrace1();
+    updateMErrorLines();
+    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -143,6 +153,8 @@ xErrorSlider.oninput = function() {
     xError = 2*(xErrorSlider.value/100);
 
     updateTrace1();
+    updateMErrorLines();
+    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -158,6 +170,8 @@ mSlider.oninput = function() {
 
     updateTrace0();
     updateTrace1();
+    updateMErrorLines();
+    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -172,6 +186,8 @@ mErrorSlider.oninput = function() {
     mError = 2*(mErrorSlider.value/100);
 
     updateTrace1();
+    updateMErrorLines();
+    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -187,6 +203,8 @@ bSlider.oninput = function() {
 
     updateTrace0();
     updateTrace1();
+    updateMErrorLines();
+    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -201,6 +219,8 @@ bErrorSlider.oninput = function() {
     bError = 2*(bErrorSlider.value/100);
 
     updateTrace1();
+    updateMErrorLines();
+    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -215,6 +235,22 @@ xErrorBars.oninput = function() {
     xErrorBarsVisible = xErrorBars.checked;
 
     updateTrace1();
+    refreshGraph();
+}
+
+var mErrorLines = document.getElementById('mErrorLines');
+mErrorLines.oninput = function() {
+    mErrorLinesVisible = mErrorLines.checked;
+
+    updateMErrorLines();
+    refreshGraph();
+}
+
+var bErrorLines = document.getElementById('bErrorLines');
+bErrorLines.oninput = function() {
+    bErrorLinesVisible = bErrorLines.checked;
+
+    updateBErrorLines();
     refreshGraph();
 }
 
@@ -294,8 +330,81 @@ function updateTrace1() {
     };
 }
 
+function updateMErrorLines() {
+    let xCoords = [];
+    let yCoordsUp = [];
+    let yCoordsLow = [];
+
+    for (let i = 0; i <= numSteps; i++) {
+        xCoords[i] = i*stepSize - 10;
+        yCoordsUp[i] = (m+mError)*Math.pow(xCoords[i], b);
+        yCoordsLow[i] = (m-mError)*Math.pow(xCoords[i], b);
+    }
+
+    mUpperBound = {
+        x: xCoords,
+        y: yCoordsUp,
+        mode: 'lines',
+        line: {
+            width: 2,
+            color: 'rgb(51, 204, 204)'
+        },
+        visible: mErrorLinesVisible,
+        name: 'm error'
+    };
+
+    mLowerBound = {
+        x: xCoords,
+        y: yCoordsLow,
+        mode: 'lines',
+        line: {
+            width: 2,
+            color: 'rgb(51, 204, 204)'
+        },
+        visible: mErrorLinesVisible,
+        name: 'm error',
+        showlegend: false
+    };
+}
+
+function updateBErrorLines() {
+    let xCoords = [];
+    let yCoordsUp = [];
+    let yCoordsLow = [];
+
+    for (let i = 0; i <= numSteps; i++) {
+        xCoords[i] = i*stepSize - 10;
+        yCoordsUp[i] = m*Math.pow(xCoords[i], b+bError);
+        yCoordsLow[i] = m*Math.pow(xCoords[i], b-bError);
+    }
+
+    bUpperBound = {
+        x: xCoords,
+        y: yCoordsUp,
+        mode: 'lines',
+        line: {
+            width: 2,
+            color: 'rgb(255, 0, 0)'
+        },
+        visible: bErrorLinesVisible,
+        name: 'b error'
+    };
+
+    bLowerBound = {
+        x: xCoords,
+        y: yCoordsLow,
+        mode: 'lines',
+        line: {
+            width: 2,
+            color: 'rgb(255, 0, 0)'
+        },
+        visible: bErrorLinesVisible,
+        name: 'b error',
+        showlegend: false
+    };
+}
+
 function updateYErrorLines() {
-    //let currentY = powerLaw(x);
     let err = totalError();
     yUpperBound = {
         x: [-10, 10],
@@ -327,9 +436,8 @@ function updateYErrorLines() {
 function updateXErrorLines() {
     let maxY = powerLaw(10);
     let minY = (b == 3) ? powerLaw(-10) : 0;
-    let topOfErrorBar = currentY+totalError();
     let bottom = (currentY-totalError() < minY) ? currentY-totalError() : minY;
-    let top = (maxY > topOfErrorBar) ? maxY : topOfErrorBar;
+    let top = (maxY > currentY+totalError()) ? maxY : currentY+totalError();
     leftBound = {
         x: [x-xError, x-xError],
         y: [bottom, top],
@@ -448,6 +556,10 @@ function refreshGraph() {
     data = [
         trace0,
         trace1,
+        mUpperBound,
+        mLowerBound,
+        bUpperBound,
+        bLowerBound,
         yUpperBound,
         yLowerBound,
         leftBound,
