@@ -288,11 +288,11 @@ function updateGraph() {
 function refreshGraph() {
     data = [
         projectile,
-        target/*,
+        target,
         upperBound,
         lowerBound,
         vErrorUpperBound,
-        vErrorLowerBound*/
+        vErrorLowerBound
     ];
 
 
