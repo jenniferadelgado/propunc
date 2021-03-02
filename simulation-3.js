@@ -190,8 +190,6 @@ xSlider.oninput = function() {
     x = 10*(xSlider.value/100);
 
     updateTrace1();
-    updateMErrorLines();
-    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
@@ -206,13 +204,9 @@ xErrorSlider.oninput = function() {
     xError = 2*(xErrorSlider.value/100);
 
     updateTrace1();
-    updateMErrorLines();
-    updateBErrorLines();
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
-    updateY_mErrorLines();
-    updateY_bErrorLines();
 
     refreshGraph();
 }
@@ -226,7 +220,6 @@ mSlider.oninput = function() {
     updateMErrorLines();
     updateBErrorLines();
     updateYErrorLines();
-    updateXErrorLines();
     updateY_xErrorLines();
     updateY_mErrorLines();
     updateY_bErrorLines();
@@ -240,12 +233,8 @@ mErrorSlider.oninput = function() {
 
     updateTrace1();
     updateMErrorLines();
-    updateBErrorLines();
     updateYErrorLines();
-    updateXErrorLines();
-    updateY_xErrorLines();
     updateY_mErrorLines();
-    updateY_bErrorLines();
 
     refreshGraph();
 }
@@ -259,7 +248,6 @@ bSlider.oninput = function() {
     updateMErrorLines();
     updateBErrorLines();
     updateYErrorLines();
-    updateXErrorLines();
     updateY_xErrorLines();
     updateY_mErrorLines();
     updateY_bErrorLines();
@@ -272,12 +260,8 @@ bErrorSlider.oninput = function() {
     bError = bErrorSlider.value/100;
 
     updateTrace1();
-    updateMErrorLines();
     updateBErrorLines();
     updateYErrorLines();
-    updateXErrorLines();
-    updateY_xErrorLines();
-    updateY_mErrorLines();
     updateY_bErrorLines();
 
     refreshGraph();
@@ -466,7 +450,7 @@ function updateYErrorLines() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2,
+            width: 4,
             color: 'rgb(0, 153, 51)'
         },
         visible: yErrorLinesVisible,
@@ -479,7 +463,7 @@ function updateYErrorLines() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2,
+            width: 4,
             color: 'rgb(0, 153, 51)'
         },
         visible: yErrorLinesVisible,
@@ -488,13 +472,10 @@ function updateYErrorLines() {
 }
 
 function updateXErrorLines() {
-    let maxY = powerLaw(10);
-    let minY = (b == 3) ? powerLaw(-10) : 0;
-    let bottom = (currentY-totalError() < minY) ? currentY-totalError() : minY;
-    let top = (maxY > currentY+totalError()) ? maxY : currentY+totalError();
+    
     leftBound = {
         x: [x-xError, x-xError],
-        y: [bottom, top],
+        y: ranges[0], // Set to largest range to cover whole graph vertically
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -507,7 +488,7 @@ function updateXErrorLines() {
 
     rightBound = {
         x: [x+xError, x+xError],
-        y: [bottom, top],
+        y: ranges[0],
         mode: 'lines',
         line: {
             dash: 'dot',
