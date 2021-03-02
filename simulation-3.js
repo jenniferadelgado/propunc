@@ -6,10 +6,13 @@ var mError = 1;
 var b = 2;
 var bError = 0.5;
 
-var numSteps = 100;
-var stepSize = 20/numSteps;
+var numSteps = 1000;
+var stepSize = 10/numSteps;
 var xCoords = [];
 var yCoords = [];
+for (let i = 0; i < numSteps; i++) {
+    xCoords[i] = i*stepSize;
+}
 
 var ranges = [[-20,4000],[-20,250],[-20,50]];
 var rangeIndex = 1;
@@ -334,11 +337,9 @@ y_bErrorLines.oninput = function() {
 /* ---------trace update functions--------- */
 
 function updateTrace0() {
-    xCoords = [];
     yCoords = [];
 
     for (let i = 0; i <= numSteps; i++) {
-        xCoords[i] = i*stepSize - 10;
         yCoords[i] = powerLaw(xCoords[i]);
     }
 
@@ -369,12 +370,10 @@ function updateTrace1() {
 }
 
 function updateMErrorLines() {
-    let xCoords = [];
     let yCoordsUp = [];
     let yCoordsLow = [];
 
     for (let i = 0; i <= numSteps; i++) {
-        xCoords[i] = i*stepSize - 10;
         yCoordsUp[i] = (m+mError)*Math.pow(xCoords[i], b);
         yCoordsLow[i] = (m-mError)*Math.pow(xCoords[i], b);
     }
@@ -406,12 +405,10 @@ function updateMErrorLines() {
 }
 
 function updateBErrorLines() {
-    let xCoords = [];
     let yCoordsUp = [];
     let yCoordsLow = [];
 
     for (let i = 0; i <= numSteps; i++) {
-        xCoords[i] = i*stepSize - 10;
         yCoordsUp[i] = m*Math.pow(xCoords[i], b+bError);
         yCoordsLow[i] = m*Math.pow(xCoords[i], b-bError);
     }
@@ -445,7 +442,7 @@ function updateBErrorLines() {
 function updateYErrorLines() {
     let err = totalError();
     yUpperBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY+err, currentY+err],
         mode: 'lines',
         line: {
@@ -458,7 +455,7 @@ function updateYErrorLines() {
     };
 
     yLowerBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY-err, currentY-err],
         mode: 'lines',
         line: {
@@ -503,7 +500,7 @@ function updateXErrorLines() {
 function updateY_xErrorLines() {
     let y_xError = errorFromX();
     y_xUpperBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY+y_xError, currentY+y_xError],
         mode: 'lines',
         line: {
@@ -516,7 +513,7 @@ function updateY_xErrorLines() {
     };
 
     y_xLowerBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY-y_xError, currentY-y_xError],
         mode: 'lines',
         line: {
@@ -532,7 +529,7 @@ function updateY_xErrorLines() {
 function updateY_mErrorLines() {
     let y_mError = errorFromM();
     y_mUpperBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY+y_mError, currentY+y_mError],
         mode: 'lines',
         line: {
@@ -545,7 +542,7 @@ function updateY_mErrorLines() {
     };
 
     y_mLowerBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY-y_mError, currentY-y_mError],
         mode: 'lines',
         line: {
@@ -561,7 +558,7 @@ function updateY_mErrorLines() {
 function updateY_bErrorLines() {
     let y_bError = errorFromB();
     y_bUpperBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY+y_bError, currentY+y_bError],
         mode: 'lines',
         line: {
@@ -574,7 +571,7 @@ function updateY_bErrorLines() {
     };
 
     y_bLowerBound = {
-        x: [-10, 10],
+        x: [0, 10],
         y: [currentY-y_bError, currentY-y_bError],
         mode: 'lines',
         line: {
