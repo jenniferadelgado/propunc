@@ -4,12 +4,15 @@ var xError = 1;
 var m = 2;
 var mError = 1;
 var b = 2;
-var bError = 1;
+var bError = 0.5;
 
 var numSteps = 100;
 var stepSize = 20/numSteps;
 var xCoords = [];
 var yCoords = [];
+
+var ranges = [[-20,4000],[-20,250],[-20,50]];
+var rangeIndex = 1;
 
 /* ------ Projectile Path Methods ------- */
 
@@ -119,7 +122,11 @@ var layout = {
         b: 20
     },
     xaxis: {
-        range: [-10, 10],
+        range: [0, 10],
+        autorange: false
+    },
+    yaxis: {
+        range: ranges[1],
         autorange: false
     }
 };
@@ -132,9 +139,55 @@ Plotly.newPlot(graph, data, layout);
 
 /* ---------oninput functions---------- */
 
+var largeScale = document.getElementById('large');
+largeScale.oninput = function() {
+    rangeIndex = 0;
+    updateLayout();
+}
+
+var mediumScale = document.getElementById('medium');
+mediumScale.oninput = function() {
+    rangeIndex = 1;
+    updateLayout();
+}
+
+var smallScale = document.getElementById('small');
+smallScale.oninput = function() {
+    rangeIndex = 2;
+    updateLayout();
+}
+
+function updateLayout() {
+    layout = {
+        showlegend: true,
+        legend: {
+            x: 0,
+            xanchor: 'left',
+            y: 1,
+            bgcolor: 'rgba(0,0,0,0)'
+        },
+        margin: {
+            l: 30,
+            r: 20,
+            t: 20,
+            b: 20
+        },
+        xaxis: {
+            range: [0, 10],
+            autorange: false
+        },
+        yaxis: {
+            range: ranges[rangeIndex],
+            autorange: false
+        }
+    };
+
+    refreshGraph();
+}
+
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
-    x = 20*(xSlider.value/100) - 10;
+    x = 10*(xSlider.value/100);
 
     updateTrace1();
     updateMErrorLines();
@@ -199,7 +252,7 @@ mErrorSlider.oninput = function() {
 
 var bSlider = document.getElementById('bSlider');
 bSlider.oninput = function() {
-    b = 4*(bSlider.value/100);
+    b = 4*(bSlider.value/100) - 2;
 
     updateTrace0();
     updateTrace1();
@@ -216,7 +269,7 @@ bSlider.oninput = function() {
 
 var bErrorSlider = document.getElementById('bErrorSlider');
 bErrorSlider.oninput = function() {
-    bError = 2*(bErrorSlider.value/100);
+    bError = bErrorSlider.value/100;
 
     updateTrace1();
     updateMErrorLines();
@@ -308,7 +361,8 @@ function updateTrace0() {
     trace0 = {
         x: xCoords,
         y: yCoords,
-        mode: 'lines'
+        mode: 'lines',
+        name: 'y = mx^b'
     };
 }
 

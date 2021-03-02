@@ -21,7 +21,7 @@
 			<div class='graph' id='graph'>
 				<div class='slidecontainer'>
 					<label for='xSlider'>Move the point</label>
-					<input type='range' min='0' max='100' value='75' class='slider' id='xSlider'>
+					<input type='range' min='1' max='100' value='50' class='slider' id='xSlider'>
 					<br>
 					<label for='xErrorSlider'>Change the uncertainty on x</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='xErrorSlider'>
@@ -33,7 +33,7 @@
 					<input type='range' min='0' max='100' value='50' class='slider' id='mErrorSlider'>
 					<br>
 					<label for='bSlider'>Change the exponent b</label>
-					<input type='range' min='0' max='100' value='50' class='slider' id='bSlider'>
+					<input type='range' min='0' max='100' value='100' class='slider' id='bSlider'>
 					<br>
 					<label for='bErrorSlider'>Change the uncertainty on the exponent b</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='bErrorSlider'>
@@ -44,6 +44,17 @@
 		<div class='toolbar' id='toolbar' style="background-color: rgba(139,39,227,0.2)">
 				<h3 class='title'>y = mx<sup>b</sup></h3>
 				<h3 class='title'>Toolbar</h3>
+
+				<p>Set graph scale</p>
+				<input type = 'radio' id='large' name='scale'>
+				<label for = 'large'>Large</label>
+				<br>
+				<input type = 'radio' id='medium' name = 'scale' checked = 'true'>
+				<label for = 'medium'>Medium</label>
+				<br>
+				<input type = 'radio' id='small' name = 'scale'>
+				<label for = 'small'>Small</label>
+				<hr>
 
 				<input type='checkbox' id='xErrorBars'>
 				<label for='xErrorBars'> Show horizontal error bars</label>
