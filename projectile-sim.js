@@ -131,6 +131,7 @@ var velocityErrorMax = 10;
 var velocityErrorSlider = document.getElementById('velocityErrorSlider');
 velocityErrorSlider.oninput = function() {
     vError = velocityErrorMax*(velocityErrorSlider.value/100);
+    document.getElementById('velocityErrorValue').innerHTML = "<b>Change the uncertainty on the launch velocity</b> Current value: " + vError.toFixed(2);
     updateGraph();
 }
 
@@ -145,6 +146,7 @@ var angleErrorMax = Math.PI/4;
 var angleErrorSlider = document.getElementById('angleErrorSlider');
 angleErrorSlider.oninput = function() {
     thetaError = angleErrorMax*(angleErrorSlider.value/100);
+    document.getElementById('angleErrorValue').innerHTML = "<b>Change the uncertainty in the launch angle</b> Current value: " + thetaError.toFixed(2);
     updateGraph();
 }
 

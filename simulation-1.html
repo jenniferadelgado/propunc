@@ -20,10 +20,10 @@
 		<div class='playarea'>
 			<div class='graph' id='graph'>
 				<div class='slidecontainer'>
-					<label for='xSlider'>Move the point</label>
+					<label for='xSlider'><b>Move the point</b></label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='xSlider'>
 					<br>
-					<label for='errorSlider'>Change the uncertainty on x</label>
+					<label for='errorSlider' id='errorValue'><b>Change the uncertainty on x.</b> Current value: 1.00</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='errorSlider'>
 				</div>
 			</div>
@@ -32,10 +32,10 @@
 		<div class='toolbar' id='toolbar' style="background-color: rgba(255,0,0,0.2)">
 				<h3 class='title'>Toolbar</h3>
 
-				<input type='checkbox' id='xError' name='xError'>
+				<input type='checkbox' id='xError'>
 				<label for='xError'> Show horizontal error bar</label>
 				<br>
-				<input type='checkbox' id='errorBox' name='errorBox'>
+				<input type='checkbox' id='errorBox' checked = 'true'>
 				<label for='errorBox'> Show error bounds</label>
 		</div>
 	</div>

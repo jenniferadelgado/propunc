@@ -129,6 +129,7 @@ var xErrorMax = 2;
 var xErrorSlider = document.getElementById('xErrorSlider');
 xErrorSlider.oninput = function() {
     errX = xErrorMax*(xErrorSlider.value/100);
+    document.getElementById('xErrorValue').innerHTML = "<b>Change the uncertainty on x</b> Current value: " + errX.toFixed(2);
 
     errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
@@ -167,6 +168,7 @@ var slopeErrorMax = 1;
 var mErrorSlider = document.getElementById('mErrorSlider');
 mErrorSlider.oninput = function() {
     errM = slopeErrorMax*(mErrorSlider.value/100);
+    document.getElementById('mErrorValue').innerHTML = "<b>Change the uncertainty on the slope</b> Current value: " + errM.toFixed(2);
 
     errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
@@ -297,7 +299,7 @@ function updateYErrorLines() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2,
+            width: 4,
             color: 'rgb(0, 153, 51)'
         },
         visible: yErrorLinesVisible,
@@ -310,7 +312,7 @@ function updateYErrorLines() {
         mode: 'lines',
         line: {
             dash: 'dot',
-            width: 2,
+            width: 4,
             color: 'rgb(0, 153, 51)'
         },
         visible: yErrorLinesVisible,

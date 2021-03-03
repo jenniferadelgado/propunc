@@ -48,13 +48,17 @@ var horizontalErrorBarVisible = false;
 var trace1;
 updateTrace1();
 
-var errorBoundsVisible = false;
+var errorBoundsVisible = true;
 var upperBound, lowerBound, leftBound, rightBound;
 updateErrorBounds();
 
 var data = [
     trace0,
-    trace1
+    trace1,
+    upperBound,
+    lowerBound,
+    leftBound,
+    rightBound
 ];
 
 var layout = {
@@ -90,6 +94,7 @@ var xErrorMax = 2;
 var errorSlider = document.getElementById('errorSlider');
 errorSlider.oninput = function() {
     errX = xErrorMax*(errorSlider.value/100);
+    document.getElementById('errorValue').innerHTML = "<u>Change the uncertainty on x.</u> Current value: " + errX.toFixed(2);
     updateGraph();
 }
 

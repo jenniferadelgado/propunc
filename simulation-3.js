@@ -205,6 +205,7 @@ xSlider.oninput = function() {
 var xErrorSlider = document.getElementById('xErrorSlider');
 xErrorSlider.oninput = function() {
     xError = 2*(xErrorSlider.value/100);
+    document.getElementById('xErrorValue').innerHTML = "<b>Change the uncertainty on x</b> Current value: " + xError.toFixed(2);
 
     updateTrace1();
     updateYErrorLines();
@@ -233,6 +234,7 @@ mSlider.oninput = function() {
 var mErrorSlider = document.getElementById('mErrorSlider');
 mErrorSlider.oninput = function() {
     mError = 2*(mErrorSlider.value/100);
+    document.getElementById('mErrorValue').innerHTML = "<b>Change the uncertainty on the coefficient m</b> Current value: " + mError.toFixed(2);
 
     updateTrace1();
     updateMErrorLines();
@@ -261,6 +263,7 @@ bSlider.oninput = function() {
 var bErrorSlider = document.getElementById('bErrorSlider');
 bErrorSlider.oninput = function() {
     bError = bErrorSlider.value/100;
+    document.getElementById('bErrorValue').innerHTML = "<b>Change the uncertainty on the exponent b</b> Current value: " + bError.toFixed(2);
 
     updateTrace1();
     updateBErrorLines();
