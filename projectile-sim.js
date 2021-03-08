@@ -2,7 +2,7 @@
 /* ----- Variables and Constants ------- */
 const G = 9.8; // acceleration due to gravity
 var theta = Math.PI/4; // the launch angle measured in radians
-var thetaError = 0.05;
+var thetaError = 0.025;
 var v = 10; // initial velocity
 var vError = .5;
 
@@ -64,7 +64,7 @@ function errorFromVelocity() {
 function errorFromAngle() {
     let partial = 2*v*v*Math.cos(2*theta)/G;
     let error = partial*thetaError;
-    document.getElementById('thetaErrorDisplay').innerHTML = "\theta " + error.toFixed(3);
+    document.getElementById('thetaErrorDisplay').innerHTML = "&theta; " + error.toFixed(3);
     return Math.abs(partial*thetaError);
 }
 
@@ -90,9 +90,11 @@ var target;
 updateTarget();
 
 var tErrorUpperBound, tErrorLowerBound;
+var tErrorBoundsVisible = false;
 updateThetaErrorBounds();
 
 var vErrorUpperBound, vErrorLowerBound;
+var vErrorBoundsVisible = false;
 updateVelocityErrorBounds();
 
 var data = [
@@ -101,7 +103,13 @@ var data = [
 ];
 
 var layout = {
-    showlegend: false,
+    showlegend: true,
+    legend: {
+        x: 0,
+        xanchor: 'left',
+        y: 1,
+        bgcolor: 'rgba(0,0,0,0)'
+    },
     margin: {
         l: 20,
         r: 20,
@@ -119,7 +127,7 @@ var layout = {
 };
 
 graph = document.getElementById('graph');
-Plotly.newPlot(graph, data, layout);
+Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 /* ------------Update Graph On Input-------------- */
 
@@ -146,14 +154,29 @@ var angleMax = Math.PI/2;
 var angleSlider = document.getElementById('angleSlider');
 angleSlider.oninput = function() {
     theta = angleMax*(angleSlider.value/100);
+    document.getElementById('thetaValue').innerHTML = "<b>Change the launch angle</b> Current value: " + (theta * (180/Math.PI)).toFixed(2);
     updateGraph();
 }
 
-var angleErrorMax = 0.1;
+var angleErrorMax = 0.05;
 var angleErrorSlider = document.getElementById('angleErrorSlider');
 angleErrorSlider.oninput = function() {
     thetaError = angleErrorMax*(angleErrorSlider.value/100);
     document.getElementById('angleErrorValue').innerHTML = "<b>Change the uncertainty in the launch angle</b> Current value: " + thetaError.toFixed(2);
+    updateGraph();
+}
+
+var vErrorLines = document.getElementById('vErrorLines');
+vErrorLines.oninput = function() {
+    vErrorBoundsVisible = vErrorLines.checked;
+
+    updateGraph();
+}
+
+var tErrorLines = document.getElementById('thetaErrorLines');
+tErrorLines.oninput = function() {
+    tErrorBoundsVisible = tErrorLines.checked;
+
     updateGraph();
 }
 
@@ -176,15 +199,14 @@ function updateProjectilePath() {
     projectile = {
         x: xCoords,
         y: yCoords,
-        mode: 'lines'
+        mode: 'lines',
+        name: 'trajectory'
     };
 }
 
 function updateThetaErrorBounds() {
-    // Problem might be that I'm calculating an error on x, but trying to apply it in a calculation of projectile height...
-    let terr = thetaError;//errorFromAngle();
-    let stepSizeUpper = landingDistance(theta+terr, v)/numSteps;
-    let stepSizeLower = landingDistance(theta-terr, v)/numSteps;
+    let stepSizeUpper = landingDistance(theta+thetaError, v)/numSteps;
+    let stepSizeLower = landingDistance(theta-thetaError, v)/numSteps;
     let xCoords_upper = [];
     let yCoords_upper = [];
     let xCoords_lower = [];
@@ -192,9 +214,9 @@ function updateThetaErrorBounds() {
     
     for (var i = 0; i <= numSteps; i++) {
         xCoords_upper[i] = i*stepSizeUpper;
-        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta+terr, v);
+        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta+thetaError, v);
         xCoords_lower[i] = i*stepSizeLower;
-        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta-terr, v);
+        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta-thetaError, v);
     }
 
     tErrorUpperBound = {
@@ -204,8 +226,10 @@ function updateThetaErrorBounds() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(255, 0, 0)'
-        }
+            color: 'rgb(51, 204, 204)'
+        },
+        visible: tErrorBoundsVisible,
+        name: 'angle error bounds'
     };
     tErrorLowerBound = {
         x: xCoords_lower,
@@ -214,15 +238,16 @@ function updateThetaErrorBounds() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(255, 0, 0)'
-        }
+            color: 'rgb(51, 204, 204)'
+        },
+        visible: tErrorBoundsVisible,
+        showlegend: false
     };
 }
 
 function updateVelocityErrorBounds() {
-    let err = vError;//errorFromVelocity();
-    let stepSizeUpper = landingDistance(theta, v+err)/numSteps;
-    let stepSizeLower = landingDistance(theta, v-err)/numSteps;
+    let stepSizeUpper = landingDistance(theta, v+vError)/numSteps;
+    let stepSizeLower = landingDistance(theta, v-vError)/numSteps;
     let xCoords_upper = [];
     let yCoords_upper = [];
     let xCoords_lower = [];
@@ -230,9 +255,9 @@ function updateVelocityErrorBounds() {
     
     for (var i = 0; i <= numSteps; i++) {
         xCoords_upper[i] = i*stepSizeUpper;
-        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta, v+err);
+        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta, v+vError);
         xCoords_lower[i] = i*stepSizeLower;
-        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta, v-err);
+        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta, v-vError);
     }
 
     vErrorUpperBound = {
@@ -243,7 +268,9 @@ function updateVelocityErrorBounds() {
             dash: 'dot',
             width: 2,
             color: 'rgb(0, 153, 51)'
-        }
+        },
+        visible: vErrorBoundsVisible,
+        name: 'velocity error bounds'
     };
     vErrorLowerBound = {
         x: xCoords_lower,
@@ -253,7 +280,9 @@ function updateVelocityErrorBounds() {
             dash: 'dot',
             width: 2,
             color: 'rgb(0, 153, 51)'
-        }
+        },
+        visible: vErrorBoundsVisible,
+        showlegend: false
     };
 }
 
@@ -264,13 +293,17 @@ function updateTarget() {
     target = {
         x: [xCoords[100]],
         y: [yCoords[100]],
+        line: {
+            color: 'rgb(255, 0, 0)'
+        },
         error_x: {
             type: 'constant',
             value: totalError(),
             thickness: 6,
             width: 8,
             color: 'red'
-        }
+        },
+        name: 'landing range'
     };
 }
 
