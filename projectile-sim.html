@@ -20,7 +20,7 @@
 		<div class='playarea'>
 			<div class='graph' id='graph'>
 				<div class='slidecontainer'>
-					<label for='velocitySlider'><b>Change the launch velocity</b></label>
+					<label for='velocitySlider' id='velocityValue'><b>Change the launch velocity</b> Current value: </label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='velocitySlider'>
 					<br>
 					<label for='velocityErrorSlider' id='velocityErrorValue'><b>Change the uncertainty on the launch velocity</b> Current value: </label>
@@ -38,7 +38,9 @@
 		<div class='toolbar' id='toolbar' style="background-color: rgba(0,0,255,0.2)">
 				<h3 class='title'>Toolbar</h3>
 
-				
+				<p id='vErrorDisplay'></p>
+				<p id='thetaErrorDisplay'></p>
+				<p id='totalErrorDisplay'></p>
 		</div>
 	</div>
 	

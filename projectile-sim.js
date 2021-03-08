@@ -2,9 +2,9 @@
 /* ----- Variables and Constants ------- */
 const G = 9.8; // acceleration due to gravity
 var theta = Math.PI/4; // the launch angle measured in radians
-var thetaError = Math.PI/8;
+var thetaError = 0.05;
 var v = 10; // initial velocity
-var vError = 5;
+var vError = .5;
 
 var numSteps = 100;
 var stepSize;
@@ -52,6 +52,8 @@ function verticalRange() {
  */
 function errorFromVelocity() {
     let partial = 2*v*Math.sin(2*theta)/G;
+    let error = partial*vError;
+    document.getElementById('vErrorDisplay').innerHTML = "v " + error.toFixed(3);
     return Math.abs(partial*vError);
 }
 
@@ -61,6 +63,8 @@ function errorFromVelocity() {
  */
 function errorFromAngle() {
     let partial = 2*v*v*Math.cos(2*theta)/G;
+    let error = partial*thetaError;
+    document.getElementById('thetaErrorDisplay').innerHTML = "\theta " + error.toFixed(3);
     return Math.abs(partial*thetaError);
 }
 
@@ -71,7 +75,9 @@ function errorFromAngle() {
 function totalError() {
     let delX_v = errorFromVelocity();
     let delX_theta = errorFromAngle();
-    return Math.sqrt( (delX_v*delX_v) + (delX_theta*delX_theta) );
+    let error = Math.sqrt( (delX_v*delX_v) + (delX_theta*delX_theta) );
+    document.getElementById('totalErrorDisplay').innerHTML = "total " + error.toFixed(3);
+    return error;
 }
 
 
@@ -83,8 +89,8 @@ updateProjectilePath();
 var target;
 updateTarget();
 
-var upperBound, lowerBound;
-updateErrorBounds();
+var tErrorUpperBound, tErrorLowerBound;
+updateThetaErrorBounds();
 
 var vErrorUpperBound, vErrorLowerBound;
 updateVelocityErrorBounds();
@@ -124,10 +130,11 @@ var velocityMax = 20;
 var velocitySlider = document.getElementById('velocitySlider');
 velocitySlider.oninput = function() {
     v = velocityMax*(velocitySlider.value/100);
+    document.getElementById('velocityValue').innerHTML = "<b>Change the launch velocity</b> Current value: " + v.toFixed(2);
     updateGraph();
 }
 
-var velocityErrorMax = 10;
+var velocityErrorMax = 1;
 var velocityErrorSlider = document.getElementById('velocityErrorSlider');
 velocityErrorSlider.oninput = function() {
     vError = velocityErrorMax*(velocityErrorSlider.value/100);
@@ -142,7 +149,7 @@ angleSlider.oninput = function() {
     updateGraph();
 }
 
-var angleErrorMax = Math.PI/4;
+var angleErrorMax = 0.1;
 var angleErrorSlider = document.getElementById('angleErrorSlider');
 angleErrorSlider.oninput = function() {
     thetaError = angleErrorMax*(angleErrorSlider.value/100);
@@ -173,12 +180,11 @@ function updateProjectilePath() {
     };
 }
 
-function updateErrorBounds() {
+function updateThetaErrorBounds() {
     // Problem might be that I'm calculating an error on x, but trying to apply it in a calculation of projectile height...
-    let verr = errorFromVelocity();
-    let terr = errorFromAngle();
-    let stepSizeUpper = landingDistance(theta+terr, v+verr)/numSteps;
-    let stepSizeLower = landingDistance(theta-terr, v-verr)/numSteps;
+    let terr = thetaError;//errorFromAngle();
+    let stepSizeUpper = landingDistance(theta+terr, v)/numSteps;
+    let stepSizeLower = landingDistance(theta-terr, v)/numSteps;
     let xCoords_upper = [];
     let yCoords_upper = [];
     let xCoords_lower = [];
@@ -186,12 +192,12 @@ function updateErrorBounds() {
     
     for (var i = 0; i <= numSteps; i++) {
         xCoords_upper[i] = i*stepSizeUpper;
-        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta+terr, v+verr);
+        yCoords_upper[i] = projectileHeight(xCoords_upper[i], theta+terr, v);
         xCoords_lower[i] = i*stepSizeLower;
-        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta-terr, v+verr);
+        yCoords_lower[i] = projectileHeight(xCoords_lower[i], theta-terr, v);
     }
 
-    upperBound = {
+    tErrorUpperBound = {
         x: xCoords_upper,
         y: yCoords_upper,
         mode: 'lines',
@@ -201,7 +207,7 @@ function updateErrorBounds() {
             color: 'rgb(255, 0, 0)'
         }
     };
-    lowerBound = {
+    tErrorLowerBound = {
         x: xCoords_lower,
         y: yCoords_lower,
         mode: 'lines',
@@ -214,7 +220,7 @@ function updateErrorBounds() {
 }
 
 function updateVelocityErrorBounds() {
-    let err = errorFromVelocity();
+    let err = vError;//errorFromVelocity();
     let stepSizeUpper = landingDistance(theta, v+err)/numSteps;
     let stepSizeLower = landingDistance(theta, v-err)/numSteps;
     let xCoords_upper = [];
@@ -275,7 +281,7 @@ function updateGraph() {
     
     updateProjectilePath();
 
-    updateErrorBounds();
+    updateThetaErrorBounds();
     
     updateVelocityErrorBounds();
 
@@ -291,8 +297,8 @@ function refreshGraph() {
     data = [
         projectile,
         target,
-        upperBound,
-        lowerBound,
+        tErrorUpperBound,
+        tErrorLowerBound,
         vErrorUpperBound,
         vErrorLowerBound
     ];
