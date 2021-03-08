@@ -17,7 +17,7 @@ for (let i = 0; i < numSteps; i++) {
 var ranges = [[-20,4000],[-20,250],[-20,50]];
 var rangeIndex = 1;
 
-/* ------ Projectile Path Methods ------- */
+/* ------ Trace and Error Methods ------- */
 
 /**
  * Calculates y = mx^b
@@ -135,7 +135,7 @@ var layout = {
 };
 
 graph = document.getElementById('graph');
-Plotly.newPlot(graph, data, layout);
+Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 /* ------------Update Graph On Input-------------- */
 

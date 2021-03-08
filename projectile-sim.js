@@ -224,7 +224,6 @@ function updateThetaErrorBounds() {
         y: yCoords_upper,
         mode: 'lines',
         line: {
-            dash: 'dot',
             width: 2,
             color: 'rgb(51, 204, 204)'
         },
@@ -236,7 +235,6 @@ function updateThetaErrorBounds() {
         y: yCoords_lower,
         mode: 'lines',
         line: {
-            dash: 'dot',
             width: 2,
             color: 'rgb(51, 204, 204)'
         },
@@ -265,7 +263,6 @@ function updateVelocityErrorBounds() {
         y: yCoords_upper,
         mode: 'lines',
         line: {
-            dash: 'dot',
             width: 2,
             color: 'rgb(0, 153, 51)'
         },
@@ -277,7 +274,6 @@ function updateVelocityErrorBounds() {
         y: yCoords_lower,
         mode: 'lines',
         line: {
-            dash: 'dot',
             width: 2,
             color: 'rgb(0, 153, 51)'
         },
