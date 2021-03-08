@@ -20,16 +20,16 @@
 		<div class='playarea'>
 			<div class='graph' id='graph'>
 				<div class='slidecontainer'>
-					<label for='velocitySlider' id='velocityValue'><b>Change the launch velocity</b> Current value: </label>
+					<label for='velocitySlider' id='velocityValue'><b>Change the launch velocity</b> Current value: 10.00 m/s</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='velocitySlider'>
 					<br>
-					<label for='velocityErrorSlider' id='velocityErrorValue'><b>Change the uncertainty on the launch velocity</b> Current value: </label>
+					<label for='velocityErrorSlider' id='velocityErrorValue'><b>Change the uncertainty on the launch velocity</b> Current value: 0.50 m/s</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='velocityErrorSlider'>
 					<br>
-					<label for='angleSlider' id='thetaValue'><b>Change the launch angle</b> Current value: </label>
+					<label for='angleSlider' id='thetaValue'><b>Change the launch angle</b> Current value: 45.00&deg;</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='angleSlider'>
 					<br>
-					<label for='angleErrorSlider' id='angleErrorValue'><b>Change the uncertainty in the launch angle</b> Current value: </label>
+					<label for='angleErrorSlider' id='angleErrorValue'><b>Change the uncertainty in the launch angle</b> Current value: 1.43&deg;</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='angleErrorSlider'>
 				</div>
 			</div>
@@ -37,16 +37,17 @@
 
 		<div class='toolbar' id='toolbar' style="background-color: rgba(0,0,255,0.2)">
 				<h3 class='title'>Toolbar</h3>
-
+				<hr>
+				<p><b>Propagated Error Values</b></p>
 				<p id='vErrorDisplay'></p>
 				<p id='thetaErrorDisplay'></p>
 				<p id='totalErrorDisplay'></p>
-
+				<hr>
 				<input type = 'checkbox' id = 'vErrorLines'>
-				<label for='vErrorLines'> Show error lines for &delta;v</label>
+				<label for='vErrorLines'> Show velocity error bounds</label>
 				<br>
 				<input type = 'checkbox' id = 'thetaErrorLines'>
-				<label for='thetaErrorLines'> Show error lines for &delta;&theta;</label>
+				<label for='thetaErrorLines'> Show angle error bounds</label>
 		</div>
 	</div>
 	
