@@ -110,28 +110,12 @@ var errorGraphLayout = {
         b: 20
     },
     barmode: 'stack',
-    showlegend: false
+    showlegend: false,
+    yaxis: {visible: false}
 };
 
-var propErrX = {
-    x: ['% of total error'],
-    y: [(errorFromX()/totalError())*100],
-    text: ['x_v error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(0, 153, 51)'}
-};
-
-var propErrSlope = {
-    x: ['% of total error'],
-    y: [(errorFromSlope()/totalError())*100],
-    text: ['x_theta error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(51, 204, 204)'}
-};
+var propErrX, propErrSlope;
+updateErrorGraph();
 
 var errorData = [
     propErrX,
@@ -151,14 +135,11 @@ xSlider.oninput = function() {
     x = xSlider.value/10;
 
     updateTrace1();
-
     updateYErrorLines();
-
     updateXErrorLines();
-
     updateY_xErrorLines();
-
     updateY_mErrorLines();
+    updateErrorGraph();
     
     refreshGraph();
 }
@@ -170,12 +151,10 @@ xErrorSlider.oninput = function() {
     document.getElementById('xErrorValue').innerHTML = "<b>Change the uncertainty on x</b> Current value: " + xError.toFixed(2);
 
     updateTrace1();
-
     updateYErrorLines();
-
     updateXErrorLines();
-
     updateY_xErrorLines();
+    updateErrorGraph();
     
     refreshGraph();
 }
@@ -186,16 +165,12 @@ slopeSlider.oninput = function() {
     m = slopeMax*(slopeSlider.value/100);
 
     updateTrace0();
-
     updateTrace1();
-
     updateSlopeErrorLines();
-
     updateYErrorLines();
-
     updateY_xErrorLines();
-
     updateY_mErrorLines();
+    updateErrorGraph();
     
     refreshGraph();
 }
@@ -207,12 +182,10 @@ mErrorSlider.oninput = function() {
     document.getElementById('mErrorValue').innerHTML = "<b>Change the uncertainty on the slope</b> Current value: " + mError.toFixed(2);
 
     updateTrace1();
-
     updateSlopeErrorLines();
-
     updateYErrorLines();
-
     updateY_mErrorLines();
+    updateErrorGraph();
     
     refreshGraph();
 }
@@ -443,7 +416,33 @@ function updateY_mErrorLines() {
 }
 
 /**
+ * Updates the traces for the propagated error bar graph.
+ */
+function updateErrorGraph() {
+    propErrX = {
+        x: ['proportion of total error'],
+        y: [errorFromX()/totalError()],
+        text: ['y_x error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(0, 153, 51)'}
+    };
+
+    propErrSlope = {
+        x: ['proportion of total error'],
+        y: [errorFromSlope()/totalError()],
+        text: ['y_m error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(51, 204, 204)'}
+    };
+}
+
+/**
  * Updates all elements on the graph to reflect changes caused by user input.
+ * ----UNUSED----
  */
 function updateGraph() {
 
@@ -466,6 +465,7 @@ function updateGraph() {
 
 /**
  * Refreshes the data array and calls Plotly.react to make changes appear on graph.
+ * Also refreshes the propagated error bar graph.
  */
 function refreshGraph() {
     data = [
@@ -485,29 +485,10 @@ function refreshGraph() {
 
     Plotly.react(graph, data, layout);
 
-    propErrX = {
-    x: ['% of total error'],
-    y: [(errorFromX()/totalError())*100],
-    text: ['x_v error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(0, 153, 51)'}
-};
-
-    propErrSlope = {
-    x: ['% of total error'],
-    y: [(errorFromSlope()/totalError())*100],
-    text: ['x_theta error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(51, 204, 204)'}
-};
-
     errorData = [
-    propErrX,
-    propErrSlope
-];
+        propErrX,
+        propErrSlope
+    ];
+
     Plotly.react(errorGraph, errorData, errorGraphLayout);
 }
