@@ -137,6 +137,59 @@ var layout = {
 graph = document.getElementById('graph');
 Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
+var errorGraphLayout = {
+    margin: {
+        l: 25,
+        r: 20,
+        t: 20,
+        b: 20
+    },
+    barmode: 'stack',
+    legend: {
+        xanchor: 'right',
+        bgcolor: 'rgba(0,0,0,0)'
+    },
+    showlegend: false
+};
+
+var propErrX = {
+    x: ['% of total error'],
+    y: [(errorFromX()/totalError())*100],
+    name: 'y_x error',
+    text: ['y_x error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(204, 0, 0)'}
+};
+
+var propErrM = {
+    x: ['% of total error'],
+    y: [(errorFromM()/totalError())*100],
+    name: 'y_m error',
+    text: ['y_m error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(51, 204, 204)'}
+};
+
+var propErrB = {
+    x: ['% of total error'],
+    y: [(errorFromB()/totalError())*100],
+    name: 'y_b error',
+    text: ['y_b error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(255, 0, 0)'}
+};
+
+var errorData = [propErrX, propErrM, propErrB];
+
+errorGraph = document.getElementById('errorGraph');
+Plotly.newPlot(errorGraph, errorData, errorGraphLayout, {staticPlot: false});
+
 /* ------------Update Graph On Input-------------- */
 
 
@@ -614,4 +667,41 @@ function refreshGraph() {
     ];
 
     Plotly.react(graph, data, layout);
+
+    propErrX = {
+    x: ['% of total error'],
+    y: [(errorFromX()/totalError())*100],
+    name: 'y_x error',
+    text: ['y_x error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(204, 0, 0)'}
+};
+
+    propErrM = {
+    x: ['% of total error'],
+    y: [(errorFromM()/totalError())*100],
+    name: 'y_m error',
+    text: ['y_m error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(51, 204, 204)'}
+};
+
+    propErrB = {
+    x: ['% of total error'],
+    y: [(errorFromB()/totalError())*100],
+    name: 'y_b error',
+    text: ['y_b error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(255, 0, 0)'}
+};
+
+    errorData = [propErrX, propErrM, propErrB];
+
+    Plotly.react(errorGraph, errorData, errorGraphLayout);
 }

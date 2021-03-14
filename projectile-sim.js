@@ -129,6 +129,30 @@ var layout = {
 graph = document.getElementById('graph');
 Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
+var errorGraphLayout = {
+    margin: {
+        l: 25,
+        r: 20,
+        t: 20,
+        b: 50
+    },
+    yaxis: {
+        range: [0, 100],
+        autorange: false
+    }
+};
+
+var errorData = [
+    {
+        x: ['err on x from v (%)', 'err on x from angle (%)'],
+        y: [(errorFromVelocity()/totalError())*100, (errorFromAngle()/totalError())*100],
+        type: 'bar'
+    }
+];
+
+errorGraph = document.getElementById('errorGraph');
+Plotly.newPlot(errorGraph, errorData, errorGraphLayout, {staticPlot: true});
+
 /* ------------Update Graph On Input-------------- */
 
 
@@ -332,6 +356,16 @@ function refreshGraph() {
         vErrorLowerBound
     ];
 
+    let totalErr = totalError();
+    errorData = [
+        {
+            x: ['err on x from v (%)', 'err on x from angle (%)'],
+            y: [(errorFromVelocity()/totalErr)*100, (errorFromAngle()/totalErr)*100],
+            type: 'bar'
+        }
+    ];
+
 
     Plotly.react(graph, data, layout);
+    Plotly.react(errorGraph, errorData, errorGraphLayout);
 }
