@@ -14,7 +14,7 @@ for (let i = 0; i < numSteps; i++) {
     xCoords[i] = i*stepSize;
 }
 
-var ranges = [[-20,4000],[-20,250],[-20,50]];
+var ranges = [[-20,1500],[-20,500],[-10,20],[-0.5,1]];
 var rangeIndex = 1;
 
 /* ------ Trace and Error Methods ------- */
@@ -157,6 +157,12 @@ mediumScale.oninput = function() {
 var smallScale = document.getElementById('small');
 smallScale.oninput = function() {
     rangeIndex = 2;
+    updateLayout();
+}
+
+var tinyScale = document.getElementById('tiny');
+tinyScale.oninput = function() {
+    rangeIndex = 3;
     updateLayout();
 }
 
