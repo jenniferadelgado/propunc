@@ -53,7 +53,6 @@ function verticalRange() {
 function errorFromVelocity() {
     let partial = 2*v*Math.sin(2*theta)/G;
     let error = partial*vError;
-    document.getElementById('vErrorDisplay').innerHTML = "&delta;x<sub>v</sub> = " + error.toFixed(3);
     return Math.abs(partial*vError);
 }
 
@@ -64,7 +63,6 @@ function errorFromVelocity() {
 function errorFromAngle() {
     let partial = 2*v*v*Math.cos(2*theta)/G;
     let error = partial*thetaError;
-    document.getElementById('thetaErrorDisplay').innerHTML = "&delta;x<sub>&theta;</sub> = " + error.toFixed(3);
     return Math.abs(partial*thetaError);
 }
 
@@ -76,7 +74,6 @@ function totalError() {
     let delX_v = errorFromVelocity();
     let delX_theta = errorFromAngle();
     let error = Math.sqrt( (delX_v*delX_v) + (delX_theta*delX_theta) );
-    document.getElementById('totalErrorDisplay').innerHTML = "&delta;x = " + error.toFixed(3);
     return error;
 }
 
