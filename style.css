@@ -109,8 +109,8 @@ body {
 }
 
 .slidecontainer {
+	position: relative;
 	width: 100%;
-	
 }
 
 .slider {
@@ -123,6 +123,35 @@ body {
   opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
   -webkit-transition: .2s; /* 0.2 seconds transition on hover */
   transition: opacity .2s;
+}
+
+.pointer {
+	position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translate(-50%, 0);
+	width: 0;
+	height: 0;
+	border-left: 25px solid transparent;
+	border-right: 25px solid transparent;
+	border-top: 25px solid blue;
+	animation: pulse 0.5s infinite alternate;
+}
+
+@keyframes pulse {
+	from {opacity: 1;}
+	to {opacity: 0.5;}
+}
+
+.pointerLabel {
+	position: absolute;
+	bottom: 25px;
+	width: 100px;
+	height: 20px;
+	margin: 0;
+	text-align: center;
+	color: red;
+	transform: translate(-50%, 0);
 }
 
 label {

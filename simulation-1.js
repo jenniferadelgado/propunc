@@ -86,6 +86,7 @@ Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
+    document.getElementById('pointer').hidden = true;
     sliderValue = xSlider.value;
     updateGraph();
 }
@@ -94,7 +95,7 @@ var xErrorMax = 2;
 var errorSlider = document.getElementById('errorSlider');
 errorSlider.oninput = function() {
     errX = xErrorMax*(errorSlider.value/100);
-    document.getElementById('errorValue').innerHTML = "<u>Change the uncertainty on x.</u> Current value: " + errX.toFixed(2);
+    document.getElementById('errorValue').innerHTML = "<b>Change the uncertainty on x.</b> Current value: " + errX.toFixed(2);
     updateGraph();
 }
 
