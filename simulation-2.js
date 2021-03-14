@@ -1,11 +1,19 @@
 
+/* ----- Variables and Constants ------- */
+var x = 5; // Position of the point
+var xError = 1; // The uncertainty on x
+var m = 1; // Slope of the line
+var mError = .5; // The uncertainty on the slope
+
+/* ----- Error Propagation Methods ------- */
+
 /**
  * Calculates the error on y due to uncertainty on the slope.
  * @param {number} x - the value of x.
  * @param {number} mError - the uncertainty on the slope.
  * @return {number} The uncertainty on y from the slope.
  */
-function errorFromSlope(x, mError) {
+function errorFromSlope() {
     return Math.abs(x*mError);
 }
 
@@ -15,7 +23,7 @@ function errorFromSlope(x, mError) {
  * @param {number} xError - the uncertainty on x.
  * @return {number} The uncertainty on y from x.
  */
-function errorFromX(m, xError) {
+function errorFromX() {
     return Math.abs(m*xError);
 }
 
@@ -27,23 +35,17 @@ function errorFromX(m, xError) {
  * @param {number} mError - the uncertainty on the slope.
  * @return {number} The total uncertainty on y.
  */
-function totalError(x, m, xError, mError) {
-    let yError_x = errorFromX(m, xError);
-    let yError_m = errorFromSlope(x, mError);
+function totalError() {
+    let yError_x = errorFromX();
+    let yError_m = errorFromSlope();
     return Math.sqrt(yError_x*yError_x + yError_m*yError_m);
 }
 
 /* ----------------Initial Graph Setup---------------- */
 
-var m = 1; // variable for slope
-
 var trace0;
 updateTrace0();
 
-var xSliderValue = 5; // Position of the point, as set by the corresponding slider.
-var errX = 1; // The uncertainty on x, as set by the corresponding slider.
-var errM = .5; // The uncertainty on the slope, as set by the corresponding slider.
-var errY = totalError(xSliderValue, m, errX, errM);
 var xErrorBarsVisible = false;
 var trace1;
 updateTrace1();
@@ -61,12 +63,10 @@ var leftBound, rightBound;
 updateXErrorLines();
 
 var y_xErrorLinesVisible = false;
-var errY_x = errorFromX(m, errX);
 var y_xUpperBound, y_xLowerBound;
 updateY_xErrorLines();
 
 var y_mErrorLinesVisible = false;
-var errY_m = errorFromSlope(xSliderValue, errM);
 var y_mUpperBound, y_mLowerBound;
 updateY_mErrorLines();
 
@@ -102,6 +102,45 @@ var layout = {
 graph = document.getElementById('graph');
 Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
+var errorGraphLayout = {
+    margin: {
+        l: 20,
+        r: 20,
+        t: 20,
+        b: 20
+    },
+    barmode: 'stack',
+    showlegend: false
+};
+
+var propErrX = {
+    x: ['% of total error'],
+    y: [(errorFromX()/totalError())*100],
+    text: ['x_v error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(0, 153, 51)'}
+};
+
+var propErrSlope = {
+    x: ['% of total error'],
+    y: [(errorFromSlope()/totalError())*100],
+    text: ['x_theta error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(51, 204, 204)'}
+};
+
+var errorData = [
+    propErrX,
+    propErrSlope
+];
+
+errorGraph = document.getElementById('errorGraph');
+Plotly.newPlot(errorGraph, errorData, errorGraphLayout, {staticPlot: true});
+
 /* ------------Update Graph On Input-------------- */
 
 
@@ -109,9 +148,8 @@ Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
-    xSliderValue = xSlider.value/10;
+    x = xSlider.value/10;
 
-    errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
 
     updateYErrorLines();
@@ -128,10 +166,9 @@ xSlider.oninput = function() {
 var xErrorMax = 2;
 var xErrorSlider = document.getElementById('xErrorSlider');
 xErrorSlider.oninput = function() {
-    errX = xErrorMax*(xErrorSlider.value/100);
-    document.getElementById('xErrorValue').innerHTML = "<b>Change the uncertainty on x</b> Current value: " + errX.toFixed(2);
+    xError = xErrorMax*(xErrorSlider.value/100);
+    document.getElementById('xErrorValue').innerHTML = "<b>Change the uncertainty on x</b> Current value: " + xError.toFixed(2);
 
-    errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
 
     updateYErrorLines();
@@ -150,7 +187,6 @@ slopeSlider.oninput = function() {
 
     updateTrace0();
 
-    errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
 
     updateSlopeErrorLines();
@@ -167,10 +203,9 @@ slopeSlider.oninput = function() {
 var slopeErrorMax = 1;
 var mErrorSlider = document.getElementById('mErrorSlider');
 mErrorSlider.oninput = function() {
-    errM = slopeErrorMax*(mErrorSlider.value/100);
-    document.getElementById('mErrorValue').innerHTML = "<b>Change the uncertainty on the slope</b> Current value: " + errM.toFixed(2);
+    mError = slopeErrorMax*(mErrorSlider.value/100);
+    document.getElementById('mErrorValue').innerHTML = "<b>Change the uncertainty on the slope</b> Current value: " + mError.toFixed(2);
 
-    errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
 
     updateSlopeErrorLines();
@@ -246,15 +281,15 @@ function updateTrace0() {
  */
 function updateTrace1() {
     trace1 = {
-        x: [xSliderValue],
-        y: [m*xSliderValue],
+        x: [x],
+        y: [m*x],
         error_y: {
             type: 'constant',
-            value: errY
+            value: totalError()
         },
         error_x: {
             type: 'constant',
-            value: errX,
+            value: xError,
             visible: xErrorBarsVisible
         },
         type: 'scatter',
@@ -269,7 +304,7 @@ function updateTrace1() {
 function updateSlopeErrorLines() {
     slopeUpperBound = {
         x: [0, 10],
-        y: [0, (m+errM)*10],
+        y: [0, (m+mError)*10],
         mode: 'lines',
         line: {
             width: 2,
@@ -281,7 +316,7 @@ function updateSlopeErrorLines() {
 
     slopeLowerBound = {
         x: [0, 10],
-        y: [0, (m-errM)*10],
+        y: [0, (m-mError)*10],
         mode: 'lines',
         line: {
             width: 2,
@@ -293,9 +328,10 @@ function updateSlopeErrorLines() {
 }
 
 function updateYErrorLines() {
+    let err = totalError();
     yUpperBound = {
         x: [0, 10],
-        y: [m*xSliderValue + errY, m*xSliderValue + errY],
+        y: [m*x + err, m*x + err],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -308,7 +344,7 @@ function updateYErrorLines() {
 
     yLowerBound = {
         x: [0, 10],
-        y: [m*xSliderValue - errY, m*xSliderValue - errY],
+        y: [m*x - err, m*x - err],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -322,7 +358,7 @@ function updateYErrorLines() {
 
 function updateXErrorLines() {
     leftBound = {
-        x: [xSliderValue - errX, xSliderValue - errX],
+        x: [x - xError, x - xError],
         y: [0, 10],
         mode: 'lines',
         line: {
@@ -335,7 +371,7 @@ function updateXErrorLines() {
     };
 
     rightBound = {
-        x: [xSliderValue + errX, xSliderValue + errX],
+        x: [x + xError, x + xError],
         y: [0, 10],
         mode: 'lines',
         line: {
@@ -349,10 +385,10 @@ function updateXErrorLines() {
 }
 
 function updateY_xErrorLines() {
-    errY_x = errorFromX(m, errX);
+    let errY_x = errorFromX();
     y_xUpperBound = {
         x: [0, 10],
-        y: [m*xSliderValue + errY_x, m*xSliderValue + errY_x],
+        y: [m*x + errY_x, m*x + errY_x],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -365,7 +401,7 @@ function updateY_xErrorLines() {
 
     y_xLowerBound = {
         x: [0, 10],
-        y: [m*xSliderValue - errY_x, m*xSliderValue - errY_x],
+        y: [m*x - errY_x, m*x - errY_x],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -378,10 +414,10 @@ function updateY_xErrorLines() {
 }
 
 function updateY_mErrorLines() {
-    errY_m = errorFromSlope(xSliderValue, errM);
+    let errY_m = errorFromSlope();
     y_mUpperBound = {
         x: [0, 10],
-        y: [m*xSliderValue + errY_m, m*xSliderValue + errY_m],
+        y: [m*x + errY_m, m*x + errY_m],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -394,7 +430,7 @@ function updateY_mErrorLines() {
 
     y_mLowerBound = {
         x: [0, 10],
-        y: [m*xSliderValue - errY_m, m*xSliderValue - errY_m],
+        y: [m*x - errY_m, m*x - errY_m],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -413,7 +449,6 @@ function updateGraph() {
 
     updateTrace0();
 
-    errY = totalError(xSliderValue, m, errX, errM);
     updateTrace1();
 
     updateSlopeErrorLines();
@@ -449,4 +484,30 @@ function refreshGraph() {
     ];
 
     Plotly.react(graph, data, layout);
+
+    propErrX = {
+    x: ['% of total error'],
+    y: [(errorFromX()/totalError())*100],
+    text: ['x_v error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(0, 153, 51)'}
+};
+
+    propErrSlope = {
+    x: ['% of total error'],
+    y: [(errorFromSlope()/totalError())*100],
+    text: ['x_theta error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(51, 204, 204)'}
+};
+
+    errorData = [
+    propErrX,
+    propErrSlope
+];
+    Plotly.react(errorGraph, errorData, errorGraphLayout);
 }
