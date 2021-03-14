@@ -139,52 +139,23 @@ Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 var errorGraphLayout = {
     margin: {
-        l: 25,
+        l: 20,
         r: 20,
         t: 20,
         b: 20
     },
     barmode: 'stack',
-    showlegend: false
+    showlegend: false,
+    yaxis: {visible: false}
 };
 
-var propErrX = {
-    x: ['% of total error'],
-    y: [(errorFromX()/totalError())*100],
-    name: 'y_x error',
-    text: ['y_x error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(204, 0, 0)'}
-};
-
-var propErrM = {
-    x: ['% of total error'],
-    y: [(errorFromM()/totalError())*100],
-    name: 'y_m error',
-    text: ['y_m error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(51, 204, 204)'}
-};
-
-var propErrB = {
-    x: ['% of total error'],
-    y: [(errorFromB()/totalError())*100],
-    name: 'y_b error',
-    text: ['y_b error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(255, 0, 0)'}
-};
+var propErrX, propErrM, propErrB;
+updateErrorGraph();
 
 var errorData = [propErrX, propErrM, propErrB];
 
 errorGraph = document.getElementById('errorGraph');
-Plotly.newPlot(errorGraph, errorData, errorGraphLayout, {staticPlot: false});
+Plotly.newPlot(errorGraph, errorData, errorGraphLayout, {staticPlot: true});
 
 /* ------------Update Graph On Input-------------- */
 
@@ -253,6 +224,7 @@ xSlider.oninput = function() {
     updateY_xErrorLines();
     updateY_mErrorLines();
     updateY_bErrorLines();
+    updateErrorGraph();
 
     refreshGraph();
 }
@@ -266,6 +238,7 @@ xErrorSlider.oninput = function() {
     updateYErrorLines();
     updateXErrorLines();
     updateY_xErrorLines();
+    updateErrorGraph();
 
     refreshGraph();
 }
@@ -282,6 +255,7 @@ mSlider.oninput = function() {
     updateY_xErrorLines();
     updateY_mErrorLines();
     updateY_bErrorLines();
+    updateErrorGraph();
 
     refreshGraph();
 }
@@ -295,6 +269,7 @@ mErrorSlider.oninput = function() {
     updateMErrorLines();
     updateYErrorLines();
     updateY_mErrorLines();
+    updateErrorGraph();
 
     refreshGraph();
 }
@@ -311,6 +286,7 @@ bSlider.oninput = function() {
     updateY_xErrorLines();
     updateY_mErrorLines();
     updateY_bErrorLines();
+    updateErrorGraph();
 
     refreshGraph();
 }
@@ -324,6 +300,7 @@ bErrorSlider.oninput = function() {
     updateBErrorLines();
     updateYErrorLines();
     updateY_bErrorLines();
+    updateErrorGraph();
 
     refreshGraph();
 }
@@ -642,6 +619,41 @@ function updateY_bErrorLines() {
     };
 }
 
+/**
+ * Updates the traces for the propagated error bar graph.
+ */
+function updateErrorGraph() {
+    propErrX = {
+        x: ['proportion of total error'],
+        y: [errorFromX()/totalError()],
+        text: ['y_x error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(204, 0, 0)'}
+    };
+
+    propErrM = {
+        x: ['proportion of total error'],
+        y: [errorFromM()/totalError()],
+        text: ['y_m error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(51, 204, 204)'}
+    };
+
+    propErrB = {
+        x: ['proportion of total error'],
+        y: [errorFromB()/totalError()],
+        text: ['y_b error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(255, 0, 0)'}
+    };
+}
+
 function refreshGraph() {
     data = [
         trace0,
@@ -663,39 +675,6 @@ function refreshGraph() {
     ];
 
     Plotly.react(graph, data, layout);
-
-    propErrX = {
-    x: ['% of total error'],
-    y: [(errorFromX()/totalError())*100],
-    name: 'y_x error',
-    text: ['y_x error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(204, 0, 0)'}
-};
-
-    propErrM = {
-    x: ['% of total error'],
-    y: [(errorFromM()/totalError())*100],
-    name: 'y_m error',
-    text: ['y_m error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(51, 204, 204)'}
-};
-
-    propErrB = {
-    x: ['% of total error'],
-    y: [(errorFromB()/totalError())*100],
-    name: 'y_b error',
-    text: ['y_b error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(255, 0, 0)'}
-};
 
     errorData = [propErrX, propErrM, propErrB];
 
