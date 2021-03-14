@@ -131,34 +131,18 @@ Plotly.newPlot(graph, data, layout, {staticPlot: true});
 
 var errorGraphLayout = {
     margin: {
-        l: 25,
+        l: 20,
         r: 20,
         t: 20,
         b: 20
     },
     barmode: 'stack',
-    showlegend: false
+    showlegend: false,
+    yaxis: {visible: false}
 };
 
-var propErrV = {
-    x: ['% of total error'],
-    y: [(errorFromVelocity()/totalError())*100],
-    text: ['x_v error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(0, 153, 51)'}
-};
-
-var propErrTheta = {
-    x: ['% of total error'],
-    y: [(errorFromAngle()/totalError())*100],
-    text: ['x_theta error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(51, 204, 204)'}
-};
+var propErrV, propErrTheta;
+updateErrorGraph();
 
 var errorData = [
     propErrV,
@@ -209,14 +193,16 @@ var vErrorLines = document.getElementById('vErrorLines');
 vErrorLines.oninput = function() {
     vErrorBoundsVisible = vErrorLines.checked;
 
-    updateGraph();
+    updateVelocityErrorBounds();
+    refreshGraph();
 }
 
 var tErrorLines = document.getElementById('thetaErrorLines');
 tErrorLines.oninput = function() {
     tErrorBoundsVisible = tErrorLines.checked;
 
-    updateGraph();
+    updateThetaErrorBounds();
+    refreshGraph();
 }
 
 
@@ -343,6 +329,31 @@ function updateTarget() {
 }
 
 /**
+ * Updates the traces for the propagated error bar graph.
+ */
+function updateErrorGraph() {
+    propErrV = {
+        x: ['proportion of total error'],
+        y: [errorFromVelocity()/totalError()],
+        text: ['x_v error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(0, 153, 51)'}
+    };
+
+    propErrTheta = {
+        x: ['proportion of total error'],
+        y: [errorFromAngle()/totalError()],
+        text: ['x_theta error'],
+        textposition: 'auto',
+        hoverinfo: 'none',
+        type: 'bar',
+        marker: {color: 'rgb(51, 204, 204)'}
+    };
+}
+
+/**
  * Updates all elements on the graph to reflect changes caused by user input.
  */
 function updateGraph() {
@@ -354,12 +365,15 @@ function updateGraph() {
     updateVelocityErrorBounds();
 
     updateTarget();
+
+    updateErrorGraph();
     
     refreshGraph();
 }
 
 /**
  * Refreshes the data array and calls Plotly.react to make changes appear on graph.
+ * Also refreshes the propagated error graph.
  */
 function refreshGraph() {
     data = [
@@ -371,32 +385,12 @@ function refreshGraph() {
         vErrorLowerBound
     ];
 
-    propErrV = {
-    x: ['% of total error'],
-    y: [(errorFromVelocity()/totalError())*100],
-    text: ['x_v error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(0, 153, 51)'}
-};
-
-    propErrTheta = {
-    x: ['% of total error'],
-    y: [(errorFromAngle()/totalError())*100],
-    text: ['x_theta error'],
-    textposition: 'auto',
-    hoverinfo: 'none',
-    type: 'bar',
-    marker: {color: 'rgb(51, 204, 204)'}
-};
+    Plotly.react(graph, data, layout);
 
     errorData = [
-    propErrV,
-    propErrTheta
-];
+        propErrV,
+        propErrTheta
+    ];
 
-
-    Plotly.react(graph, data, layout);
     Plotly.react(errorGraph, errorData, errorGraphLayout);
 }
