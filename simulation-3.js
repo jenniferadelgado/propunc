@@ -145,10 +145,6 @@ var errorGraphLayout = {
         b: 20
     },
     barmode: 'stack',
-    legend: {
-        xanchor: 'right',
-        bgcolor: 'rgba(0,0,0,0)'
-    },
     showlegend: false
 };
 

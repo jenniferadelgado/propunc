@@ -134,20 +134,35 @@ var errorGraphLayout = {
         l: 25,
         r: 20,
         t: 20,
-        b: 50
+        b: 20
     },
-    yaxis: {
-        range: [0, 100],
-        autorange: false
-    }
+    barmode: 'stack',
+    showlegend: false
+};
+
+var propErrV = {
+    x: ['% of total error'],
+    y: [(errorFromVelocity()/totalError())*100],
+    text: ['x_v error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(0, 153, 51)'}
+};
+
+var propErrTheta = {
+    x: ['% of total error'],
+    y: [(errorFromAngle()/totalError())*100],
+    text: ['x_theta error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(51, 204, 204)'}
 };
 
 var errorData = [
-    {
-        x: ['err on x from v (%)', 'err on x from angle (%)'],
-        y: [(errorFromVelocity()/totalError())*100, (errorFromAngle()/totalError())*100],
-        type: 'bar'
-    }
+    propErrV,
+    propErrTheta
 ];
 
 errorGraph = document.getElementById('errorGraph');
@@ -356,14 +371,30 @@ function refreshGraph() {
         vErrorLowerBound
     ];
 
-    let totalErr = totalError();
+    propErrV = {
+    x: ['% of total error'],
+    y: [(errorFromVelocity()/totalError())*100],
+    text: ['x_v error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(0, 153, 51)'}
+};
+
+    propErrTheta = {
+    x: ['% of total error'],
+    y: [(errorFromAngle()/totalError())*100],
+    text: ['x_theta error'],
+    textposition: 'auto',
+    hoverinfo: 'none',
+    type: 'bar',
+    marker: {color: 'rgb(51, 204, 204)'}
+};
+
     errorData = [
-        {
-            x: ['err on x from v (%)', 'err on x from angle (%)'],
-            y: [(errorFromVelocity()/totalErr)*100, (errorFromAngle()/totalErr)*100],
-            type: 'bar'
-        }
-    ];
+    propErrV,
+    propErrTheta
+];
 
 
     Plotly.react(graph, data, layout);
