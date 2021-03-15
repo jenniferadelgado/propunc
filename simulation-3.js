@@ -512,7 +512,7 @@ function updateXErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(204, 0, 0)'
+            color: 'rgb(0, 0, 225)'
         },
         visible: xErrorLinesVisible,
         name: 'x error'
@@ -525,7 +525,7 @@ function updateXErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(204, 0, 0)'
+            color: 'rgb(0, 0, 225)'
         },
         visible: xErrorLinesVisible,
         showlegend: false
@@ -541,7 +541,7 @@ function updateY_xErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(204, 0, 0)'
+            color: 'rgb(0, 0, 225)'
         },
         visible: y_xErrorLinesVisible,
         name: 'y_x error'
@@ -554,7 +554,7 @@ function updateY_xErrorLines() {
         line: {
             dash: 'dot',
             width: 2,
-            color: 'rgb(204, 0, 0)'
+            color: 'rgb(0, 0, 225)'
         },
         visible: y_xErrorLinesVisible,
         showlegend: false
@@ -630,7 +630,7 @@ function updateErrorGraph() {
         textposition: 'auto',
         hoverinfo: 'none',
         type: 'bar',
-        marker: {color: 'rgb(204, 0, 0)'}
+        marker: {color: 'rgb(0, 0, 225)'}
     };
 
     propErrM = {
