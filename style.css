@@ -179,14 +179,14 @@ p {
 	background-color: black;
 	color: white;
 	font-family: Arial;
-	text-align: center;
-	padding: 5px 0;
+	//text-align: center;
+	padding: 5px;
 	border-radius: 6px;
 
 	position: absolute;
 	top: -5px;
 	left: 105%;
-	transform: translate(0, 50%);
+	//transform: translate(0, 50%);
 	z-index: 1;
 }
 

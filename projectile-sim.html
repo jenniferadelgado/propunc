@@ -26,8 +26,8 @@
 					<label for='velocityErrorSlider' id='velocityErrorValue'><b>Change the uncertainty on the launch velocity</b> Current value: 0.50 m/s</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='velocityErrorSlider'>
 					<br>
-					<label for='angleSlider' id='thetaValue'><b>Change the launch angle</b> Current value: 45.00&deg;</label>
-					<input type='range' min='0' max='100' value='50' class='slider' id='angleSlider'>
+					<label for='angleSlider' id='thetaValue'><b>Change the launch angle</b> Current value: 67.50&deg;</label>
+					<input type='range' min='0' max='100' value='75' class='slider' id='angleSlider'>
 					<br>
 					<label for='angleErrorSlider' id='angleErrorValue'><b>Change the uncertainty in the launch angle</b> Current value: 1.43&deg;</label>
 					<input type='range' min='0' max='100' value='50' class='slider' id='angleErrorSlider'>
@@ -41,7 +41,7 @@
 				<hr>
 				<div class='tooltip'>
 					<div class='errorGraph' id='errorGraph'></div>
-					<span class='tooltiptext'>Graph of proportions of propagated errors</span>
+					<span class='tooltiptext'>x_theta = error on x due to uncertainty in the angle.<br>x_v = error on x due to uncertainty in the velocity.</span>
 				</div>
 				<hr>
 				<input type = 'checkbox' id = 'vErrorLines'>
