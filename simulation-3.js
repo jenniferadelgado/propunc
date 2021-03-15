@@ -110,29 +110,8 @@ var data = [
     trace1
 ];
 
-var layout = {
-    showlegend: true,
-    legend: {
-        x: 0,
-        xanchor: 'left',
-        y: 1,
-        bgcolor: 'rgba(0,0,0,0)'
-    },
-    margin: {
-        l: 30,
-        r: 20,
-        t: 20,
-        b: 20
-    },
-    xaxis: {
-        range: [0, 10],
-        autorange: false
-    },
-    yaxis: {
-        range: ranges[1],
-        autorange: false
-    }
-};
+var layout;
+updateLayout();
 
 graph = document.getElementById('graph');
 Plotly.newPlot(graph, data, layout, {staticPlot: true});
@@ -166,24 +145,32 @@ var largeScale = document.getElementById('large');
 largeScale.oninput = function() {
     rangeIndex = 0;
     updateLayout();
+
+    refreshGraph();
 }
 
 var mediumScale = document.getElementById('medium');
 mediumScale.oninput = function() {
     rangeIndex = 1;
     updateLayout();
+
+    refreshGraph();
 }
 
 var smallScale = document.getElementById('small');
 smallScale.oninput = function() {
     rangeIndex = 2;
     updateLayout();
+
+    refreshGraph();
 }
 
 var tinyScale = document.getElementById('tiny');
 tinyScale.oninput = function() {
     rangeIndex = 3;
     updateLayout();
+
+    refreshGraph();
 }
 
 function updateLayout() {
@@ -210,8 +197,6 @@ function updateLayout() {
             autorange: false
         }
     };
-
-    refreshGraph();
 }
 
 var xSlider = document.getElementById('xSlider');
@@ -246,6 +231,7 @@ xErrorSlider.oninput = function() {
 var mSlider = document.getElementById('mSlider');
 mSlider.oninput = function() {
     m = 4*(mSlider.value/100);
+    document.getElementById('mValue').innerHTML = "<b>Change the value of the coefficient m</b> Current value: " + m.toFixed(2);
 
     updateTrace0();
     updateTrace1();
@@ -277,6 +263,7 @@ mErrorSlider.oninput = function() {
 var bSlider = document.getElementById('bSlider');
 bSlider.oninput = function() {
     b = 4*(bSlider.value/100) - 2;
+    document.getElementById('bValue').innerHTML = "<b>Change the exponent b</b> Current value: " + b.toFixed(2);
 
     updateTrace0();
     updateTrace1();
