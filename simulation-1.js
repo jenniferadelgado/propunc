@@ -1,6 +1,12 @@
 
+/* ----- Variables and Constants ------- */
+var sliderValue = 50; // The value of the point's slider bar. Used as an index to access the coordinate arrays xCoords and yCoords.
+var xError = 1; // The uncertainty on x.
+
+/* ----- Error Propagation Methods ------- */
+
 /**
- * Returns the output of a certain third order polynomial.
+ * Returns the output of an arbitrary third order polynomial.
  * @param {number} x
  * @return {number} The output of the function.
  */
@@ -23,6 +29,7 @@ function yError3rdOrder(x, xError) {
     return Math.abs(partial*xError);
 }
 
+/* Filling out the trace for the polynomial */
 numSteps = 100;
 // Range from 0 to 10
 stepSize = 10/numSteps;
@@ -41,9 +48,6 @@ var trace0 = {
     mode: 'lines'
 };
 
-var sliderValue = 50;
-var errX = 1;
-var errY = yError3rdOrder(xCoords[sliderValue], errX);
 var horizontalErrorBarVisible = false;
 var trace1;
 updateTrace1();
@@ -94,8 +98,8 @@ xSlider.oninput = function() {
 var xErrorMax = 2;
 var errorSlider = document.getElementById('errorSlider');
 errorSlider.oninput = function() {
-    errX = xErrorMax*(errorSlider.value/100);
-    document.getElementById('errorValue').innerHTML = "<b>Change the uncertainty on x.</b> Current value: " + errX.toFixed(2);
+    xError = xErrorMax*(errorSlider.value/100);
+    document.getElementById('errorValue').innerHTML = "<b>Change the uncertainty on x.</b> Current value: " + xError.toFixed(2);
     updateGraph();
 }
 
@@ -127,11 +131,11 @@ function updateTrace1() {
         y: [yCoords[sliderValue]],
         error_y: {
             type: 'constant',
-            value: errY
+            value: yError3rdOrder(xCoords[sliderValue], xError)
         },
         error_x: {
             type: 'constant',
-            value: errX,
+            value: xError,
             visible: horizontalErrorBarVisible
         },
         type: 'scatter'
@@ -143,9 +147,11 @@ function updateTrace1() {
  * @post Note that refreshGraph() must be called for changes to appear on graph.
  */
 function updateErrorBounds() {
+    let yError = yError3rdOrder(xCoords[sliderValue], xError);
+
     upperBound = {
         x: [0,10],
-        y: [yCoords[sliderValue]+errY, yCoords[sliderValue]+errY],
+        y: [yCoords[sliderValue]+yError, yCoords[sliderValue]+yError],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -157,7 +163,7 @@ function updateErrorBounds() {
 
     lowerBound = {
         x: [0,10],
-        y: [yCoords[sliderValue]-errY, yCoords[sliderValue]-errY],
+        y: [yCoords[sliderValue]-yError, yCoords[sliderValue]-yError],
         mode: 'lines',
         line: {
             dash: 'dot',
@@ -168,7 +174,7 @@ function updateErrorBounds() {
     }
 
     leftBound = {
-        x: [xCoords[sliderValue]-errX, xCoords[sliderValue]-errX],
+        x: [xCoords[sliderValue]-xError, xCoords[sliderValue]-xError],
         y: [0,10],
         mode: 'lines',
         line: {
@@ -180,7 +186,7 @@ function updateErrorBounds() {
     }
 
     rightBound = {
-        x: [xCoords[sliderValue]+errX, xCoords[sliderValue]+errX],
+        x: [xCoords[sliderValue]+xError, xCoords[sliderValue]+xError],
         y: [0,10],
         mode: 'lines',
         line: {
@@ -196,7 +202,6 @@ function updateErrorBounds() {
  * Updates all elements on the graph to reflect changes caused by user input.
  */
 function updateGraph() {
-    errY = yError3rdOrder(xCoords[sliderValue], errX);
 
     updateTrace1();
 
