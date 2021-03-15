@@ -106,7 +106,7 @@ var errorGraphLayout = {
     margin: {
         l: 20,
         r: 20,
-        t: 20,
+        t: 0,
         b: 20
     },
     barmode: 'stack',
