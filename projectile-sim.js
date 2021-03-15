@@ -1,7 +1,7 @@
 
 /* ----- Variables and Constants ------- */
 const G = 9.8; // acceleration due to gravity
-var theta = Math.PI/4; // the launch angle measured in radians
+var theta = Math.PI*(3/8); // the launch angle measured in radians
 var thetaError = 0.025;
 var v = 10; // initial velocity
 var vError = .5;
