@@ -36,12 +36,23 @@
 		</div>
 
 		<div class='toolbar' id='toolbar' style="background-color: rgba(0,0,255,0.2)">
-				<h3 class='title'>Projectile motion with no air resistance</h3>
+				<div class='tooltip'>
+					<h3 class='title'>Projectile motion with no air resistance</h3>
+					<span class='tooltiptext' style="transform: translate(0, 50%)">
+						Range equation
+						<br>
+						x = v<sup>2</sup> sin(2&theta;) / g
+					</span>
+				</div>
 				<h3 class='title'>Toolbar</h3>
 				<hr>
 				<div class='tooltip'>
 					<div class='errorGraph' id='errorGraph'></div>
-					<span class='tooltiptext'>x_theta = error on x due to uncertainty in the angle.<br>x_v = error on x due to uncertainty in the velocity.</span>
+					<span class='tooltiptext'>
+						x_theta = error on x due to uncertainty in the angle.
+						<br>
+						x_v = error on x due to uncertainty in the velocity.
+					</span>
 				</div>
 				<hr>
 				<input type = 'checkbox' id = 'vErrorLines'>
