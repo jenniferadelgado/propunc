@@ -421,7 +421,7 @@ function updateY_mErrorLines() {
 function updateErrorGraph() {
     propErrX = {
         x: ['proportion of total error'],
-        y: [errorFromX()/totalError()],
+        y: [Math.pow(errorFromX()/totalError(), 2)],
         text: ['y_x error'],
         textposition: 'auto',
         hoverinfo: 'none',
@@ -431,7 +431,7 @@ function updateErrorGraph() {
 
     propErrSlope = {
         x: ['proportion of total error'],
-        y: [errorFromSlope()/totalError()],
+        y: [Math.pow(errorFromSlope()/totalError(),2)],
         text: ['y_m error'],
         textposition: 'auto',
         hoverinfo: 'none',

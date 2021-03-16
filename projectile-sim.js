@@ -331,7 +331,7 @@ function updateTarget() {
 function updateErrorGraph() {
     propErrV = {
         x: ['proportion of total error'],
-        y: [errorFromVelocity()/totalError()],
+        y: [Math.pow(errorFromVelocity()/totalError(),2)],
         text: ['x_v error'],
         textposition: 'auto',
         hoverinfo: 'none',
@@ -341,7 +341,7 @@ function updateErrorGraph() {
 
     propErrTheta = {
         x: ['proportion of total error'],
-        y: [errorFromAngle()/totalError()],
+        y: [Math.pow(errorFromAngle()/totalError(),2)],
         text: ['x_theta error'],
         textposition: 'auto',
         hoverinfo: 'none',
