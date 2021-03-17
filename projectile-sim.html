@@ -49,17 +49,24 @@
 				<div class='tooltip'>
 					<div class='errorGraph' id='errorGraph'></div>
 					<span class='tooltiptext'>
-						x_theta = error on x due to uncertainty in the angle.
+						x_angle = error on x due to uncertainty in the angle.
 						<br>
 						x_v = error on x due to uncertainty in the velocity.
 					</span>
 				</div>
 				<hr>
-				<input type = 'checkbox' id = 'vErrorLines'>
-				<label for='vErrorLines'> Show error lines for &delta;v</label>
+
+				<div class='tooltip'>
+					<input type = 'checkbox' id = 'vErrorLines'>
+					<label for='vErrorLines'> Show v error lines</label>
+					<span class='tooltiptext'>Displays uncertainty in launch velocity</span>
+				</div>
 				<br>
-				<input type = 'checkbox' id = 'thetaErrorLines'>
-				<label for='thetaErrorLines'> Show error lines for &delta;&theta;</label>
+				<div class='tooltip'>
+					<input type = 'checkbox' id = 'thetaErrorLines'>
+					<label for='thetaErrorLines'> Show angle error lines</label>
+					<span class='tooltiptext'>Displays uncertainty in launch angle</span>
+				</div>
 		</div>
 	</div>
 	

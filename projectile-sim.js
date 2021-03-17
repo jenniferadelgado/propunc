@@ -246,17 +246,19 @@ function updateThetaErrorBounds() {
         y: yCoords_upper,
         mode: 'lines',
         line: {
+            dash: 'dash',
             width: 2,
             color: 'rgb(51, 204, 204)'
         },
         visible: tErrorBoundsVisible,
-        name: 'angle error bounds'
+        name: 'angle error'
     };
     tErrorLowerBound = {
         x: xCoords_lower,
         y: yCoords_lower,
         mode: 'lines',
         line: {
+            dash: 'dash',
             width: 2,
             color: 'rgb(51, 204, 204)'
         },
@@ -285,17 +287,19 @@ function updateVelocityErrorBounds() {
         y: yCoords_upper,
         mode: 'lines',
         line: {
+            dash: 'dash',
             width: 2,
             color: 'rgb(0, 153, 51)'
         },
         visible: vErrorBoundsVisible,
-        name: 'velocity error bounds'
+        name: 'v error'
     };
     vErrorLowerBound = {
         x: xCoords_lower,
         y: yCoords_lower,
         mode: 'lines',
         line: {
+            dash: 'dash',
             width: 2,
             color: 'rgb(0, 153, 51)'
         },
@@ -342,7 +346,7 @@ function updateErrorGraph() {
     propErrTheta = {
         x: ['proportion of total error'],
         y: [Math.pow(errorFromAngle()/totalError(),2)],
-        text: ['x_theta error'],
+        text: ['x_angle error'],
         textposition: 'auto',
         hoverinfo: 'none',
         type: 'bar',
@@ -376,10 +380,10 @@ function refreshGraph() {
     data = [
         projectile,
         target,
-        tErrorUpperBound,
-        tErrorLowerBound,
         vErrorUpperBound,
-        vErrorLowerBound
+        vErrorLowerBound,
+        tErrorUpperBound,
+        tErrorLowerBound
     ];
 
     Plotly.react(graph, data, layout);
