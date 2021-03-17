@@ -72,7 +72,7 @@ function totalError() {
 var trace0;
 updateTrace0();
 
-var currentY; // Stores the current y coordinate of the measurement point.
+var currentY; // Stores the current y coordinate of the measurement point. Updates value in updateTrace1()
 var trace1;
 updateTrace1();
 
@@ -396,7 +396,8 @@ function updateMErrorLines() {
         mode: 'lines',
         line: {
             width: 2,
-            color: 'rgb(51, 204, 204)'
+            color: 'rgb(51, 204, 204)',
+            dash: 'dash'
         },
         visible: mErrorLinesVisible,
         name: 'm error'
@@ -408,7 +409,8 @@ function updateMErrorLines() {
         mode: 'lines',
         line: {
             width: 2,
-            color: 'rgb(51, 204, 204)'
+            color: 'rgb(51, 204, 204)',
+            dash: 'dash'
         },
         visible: mErrorLinesVisible,
         name: 'm error',
@@ -431,7 +433,8 @@ function updateBErrorLines() {
         mode: 'lines',
         line: {
             width: 2,
-            color: 'rgb(255, 0, 0)'
+            color: 'rgb(255, 0, 0)',
+            dash: 'dash'
         },
         visible: bErrorLinesVisible,
         name: 'b error'
@@ -443,7 +446,8 @@ function updateBErrorLines() {
         mode: 'lines',
         line: {
             width: 2,
-            color: 'rgb(255, 0, 0)'
+            color: 'rgb(255, 0, 0)',
+            dash: 'dash'
         },
         visible: bErrorLinesVisible,
         name: 'b error',
@@ -458,7 +462,7 @@ function updateYErrorLines() {
         y: [currentY+err, currentY+err],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dashdot',
             width: 4,
             color: 'rgb(0, 153, 51)'
         },
@@ -471,7 +475,7 @@ function updateYErrorLines() {
         y: [currentY-err, currentY-err],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dashdot',
             width: 4,
             color: 'rgb(0, 153, 51)'
         },
@@ -487,7 +491,7 @@ function updateXErrorLines() {
         y: ranges[0], // Set to largest range to cover whole graph vertically
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dash',
             width: 2,
             color: 'rgb(0, 0, 225)'
         },
@@ -500,7 +504,7 @@ function updateXErrorLines() {
         y: ranges[0],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dash',
             width: 2,
             color: 'rgb(0, 0, 225)'
         },
@@ -635,14 +639,14 @@ function refreshGraph() {
     data = [
         trace0,
         trace1,
+        leftBound,
+        rightBound,
         mUpperBound,
         mLowerBound,
         bUpperBound,
         bLowerBound,
         yUpperBound,
         yLowerBound,
-        leftBound,
-        rightBound,
         y_xUpperBound,
         y_xLowerBound,
         y_mUpperBound,
