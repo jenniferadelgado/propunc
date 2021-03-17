@@ -48,7 +48,6 @@ var trace0 = {
     mode: 'lines'
 };
 
-var horizontalErrorBarVisible = false;
 var trace1;
 updateTrace1();
 
@@ -103,15 +102,6 @@ errorSlider.oninput = function() {
     updateGraph();
 }
 
-var horizErrBar = document.getElementById('xError');
-horizErrBar.oninput = function() {
-    horizontalErrorBarVisible = horizErrBar.checked;
-
-    updateTrace1();
-
-    refreshGraph();
-}
-
 var errBound = document.getElementById('errorBox');
 errBound.oninput = function() {
     errorBoundsVisible = errBound.checked;
@@ -135,8 +125,7 @@ function updateTrace1() {
         },
         error_x: {
             type: 'constant',
-            value: xError,
-            visible: horizontalErrorBarVisible
+            value: xError
         },
         type: 'scatter'
     };

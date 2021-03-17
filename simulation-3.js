@@ -72,7 +72,6 @@ function totalError() {
 var trace0;
 updateTrace0();
 
-var xErrorBarsVisible = false;
 var currentY; // Stores the current y coordinate of the measurement point.
 var trace1;
 updateTrace1();
@@ -292,14 +291,6 @@ bErrorSlider.oninput = function() {
     refreshGraph();
 }
 
-var xErrorBars = document.getElementById('xErrorBars');
-xErrorBars.oninput = function() {
-    xErrorBarsVisible = xErrorBars.checked;
-
-    updateTrace1();
-    refreshGraph();
-}
-
 var mErrorLines = document.getElementById('mErrorLines');
 mErrorLines.oninput = function() {
     mErrorLinesVisible = mErrorLines.checked;
@@ -385,8 +376,7 @@ function updateTrace1() {
         },
         error_x: {
             type: 'constant',
-            value: xError,
-            visible: xErrorBarsVisible
+            value: xError
         }
     };
 }
