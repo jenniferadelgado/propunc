@@ -271,10 +271,11 @@ function updateSlopeErrorLines() {
         y: [0, (m+mError)*10],
         mode: 'lines',
         line: {
+            dash: 'dash',
             width: 2,
             color: 'rgb(255, 0, 0)'
         },
-        name: 'Slope error',
+        name: 'm error',
         visible: mErrorLinesVisible
     };
 
@@ -283,6 +284,7 @@ function updateSlopeErrorLines() {
         y: [0, (m-mError)*10],
         mode: 'lines',
         line: {
+            dash: 'dash',
             width: 2,
             color: 'rgb(255, 0, 0)'
         },
@@ -298,7 +300,7 @@ function updateYErrorLines() {
         y: [m*x + err, m*x + err],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dashdot',
             width: 4,
             color: 'rgb(0, 153, 51)'
         },
@@ -311,7 +313,7 @@ function updateYErrorLines() {
         y: [m*x - err, m*x - err],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dashdot',
             width: 4,
             color: 'rgb(0, 153, 51)'
         },
@@ -326,7 +328,7 @@ function updateXErrorLines() {
         y: [0, 10],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dash',
             width: 2,
             color: 'rgb(0, 0, 225)'
         },
@@ -339,7 +341,7 @@ function updateXErrorLines() {
         y: [0, 10],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dash',
             width: 2,
             color: 'rgb(0, 0, 225)'
         },
@@ -432,29 +434,6 @@ function updateErrorGraph() {
 }
 
 /**
- * Updates all elements on the graph to reflect changes caused by user input.
- * ----UNUSED----
- */
-function updateGraph() {
-
-    updateTrace0();
-
-    updateTrace1();
-
-    updateSlopeErrorLines();
-
-    updateYErrorLines();
-
-    updateXErrorLines();
-
-    updateY_xErrorLines();
-
-    updateY_mErrorLines();
-    
-    refreshGraph();
-}
-
-/**
  * Refreshes the data array and calls Plotly.react to make changes appear on graph.
  * Also refreshes the propagated error bar graph.
  */
@@ -462,12 +441,12 @@ function refreshGraph() {
     data = [
         trace0,
         trace1,
+        leftBound,
+        rightBound,
         slopeUpperBound,
         slopeLowerBound,
         yUpperBound,
         yLowerBound,
-        leftBound,
-        rightBound,
         y_xUpperBound,
         y_xLowerBound,
         y_mUpperBound,
