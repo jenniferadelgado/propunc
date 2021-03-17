@@ -143,7 +143,7 @@ function updateErrorBounds() {
         y: [yCoords[sliderValue]+yError, yCoords[sliderValue]+yError],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dashdot',
             width: 2,
             color: 'rgb(255, 0, 0)'
         },
@@ -155,7 +155,7 @@ function updateErrorBounds() {
         y: [yCoords[sliderValue]-yError, yCoords[sliderValue]-yError],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dashdot',
             width: 2,
             color: 'rgb(255, 0, 0)'
         },
@@ -167,7 +167,7 @@ function updateErrorBounds() {
         y: [0,10],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dash',
             width: 2,
             color: 'rgb(255, 0, 0)'
         },
@@ -179,7 +179,7 @@ function updateErrorBounds() {
         y: [0,10],
         mode: 'lines',
         line: {
-            dash: 'dot',
+            dash: 'dash',
             width: 2,
             color: 'rgb(255, 0, 0)'
         },
