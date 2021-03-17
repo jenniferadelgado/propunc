@@ -262,7 +262,7 @@ mErrorSlider.oninput = function() {
 
 var bSlider = document.getElementById('bSlider');
 bSlider.oninput = function() {
-    b = 4*(bSlider.value/100) - 2;
+    b = 4*(bSlider.value/200) - 2;
     document.getElementById('bValue').innerHTML = "<b>Change the exponent b</b> Current value: " + b.toFixed(2);
 
     updateTrace0();
