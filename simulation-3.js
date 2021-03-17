@@ -201,7 +201,7 @@ function updateLayout() {
 
 var xSlider = document.getElementById('xSlider');
 xSlider.oninput = function() {
-    x = 10*(xSlider.value/100);
+    x = 10*(xSlider.value/1000);
 
     updateTrace1();
     updateYErrorLines();
